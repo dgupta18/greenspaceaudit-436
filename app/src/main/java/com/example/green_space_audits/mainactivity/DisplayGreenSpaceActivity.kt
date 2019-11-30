@@ -33,12 +33,13 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
         quietTV = findViewById<TextView>(R.id.quietView)
         hazardsTV = findViewById<TextView>(R.id.hazardsView)
         val context = this
-        greenspaceID = intent.getStringExtra("gsID")
+//        greenspaceID = intent.getStringExtra("gsID")
 
         // this is for testing purposes
-//        greenspaceID = "-Luk55Tvcj5CjArCxliA"
+        greenspaceID = "-Luk55Tvcj5CjArCxliA"
 //        greenspaceID = "-Luxf6N0TQ4dDATfyYQY"
 
+        val commentsSet = mutableSetOf<String>()
 
         // use an addValueListener to get the current user's username
         gsDatabase.addValueEventListener(object : ValueEventListener {
@@ -71,21 +72,24 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
                 }
 
                 for(entry in dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsComments){
-                    val commentTV = TextView(context)
-                    val authorTV = TextView(context)
-                    commentTV.textSize = 20f
-                    commentTV.text = entry.value.comment
-                    commentTV.setPadding(70,0,0,40)
+                    if(!commentsSet.contains(entry.key)) {
+                        commentsSet.add(entry.key)
+                        val commentTV = TextView(context)
+                        val authorTV = TextView(context)
+                        commentTV.textSize = 20f
+                        commentTV.text = entry.value.comment
+                        commentTV.setPadding(70, 0, 0, 40)
 
-                    authorTV.textSize = 20f
-                    authorTV.text = entry.value.authorDisplayName
-                    authorTV.setTypeface(authorTV.getTypeface(), Typeface.BOLD)
-                    authorTV.setPadding(70,0,0,0)
-                    authorTV.setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
+                        authorTV.textSize = 20f
+                        authorTV.text = entry.value.authorDisplayName
+                        authorTV.setTypeface(authorTV.getTypeface(), Typeface.BOLD)
+                        authorTV.setPadding(70, 0, 0, 0)
+                        authorTV.setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
 
-                    // add TextView to LinearLayout
-                    linear_layout.addView(authorTV)
-                    linear_layout.addView(commentTV)
+                        // add TextView to LinearLayout
+                        linear_layout.addView(authorTV)
+                        linear_layout.addView(commentTV)
+                    }
                 }
             }
             // I'm not sure why this is necessary, but it was included in the Firebase lab

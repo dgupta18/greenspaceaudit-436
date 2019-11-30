@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:textSize="22sp"
         android:layout_gravity="center_horizontal"
-        android:paddingBottom="22sp"
+        android:paddingBottom="28sp"
         android:textColor="@color/colorPrimaryDark"
         android:text="People-powered"/>
 
