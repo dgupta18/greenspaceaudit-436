@@ -35,6 +35,7 @@ class RegistrationActivity : AppCompatActivity() {
         regBtn = findViewById(R.id.register)
         progressBar = findViewById(R.id.progressBar)
         mAuth = FirebaseAuth.getInstance()
+
         regBtn!!.setOnClickListener {
             registerNewUser()
         }
