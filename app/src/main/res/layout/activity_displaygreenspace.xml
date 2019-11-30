@@ -13,10 +13,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:padding="20sp"
         android:textSize="36sp"
-        android:text="hello"
+        android:text="Mckeldin Mall"
         android:textColor="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/typeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="22sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:text="People-powered"/>
 
     <!--    TODO: do we want to add a picture of the green space on maps here? if so, how do we do that? -->
 
@@ -38,7 +47,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="22sp"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:textColor="@color/colorPrimaryDark"
+            android:text="56.7"/>
 
     </LinearLayout>
 
@@ -60,30 +70,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="22sp"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:textColor="@color/colorPrimaryDark"
+            android:text="Low"/>
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/typeView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="22sp"
-        android:textColor="@color/colorPrimaryDark"/>
 
     <TextView
         android:id="@+id/quietView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="22sp"
-        android:textColor="@color/colorPrimaryDark"/>
+        android:textColor="@color/colorPrimaryDark"
+        android:text="Quiet"/>
 
     <TextView
         android:id="@+id/hazardsView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="22sp"
-        android:textColor="@color/colorPrimaryDark"/>
+        android:textColor="@color/colorPrimaryDark"
+        android:text="Near Hazards"/>
 
     <LinearLayout
         android:id="@+id/linear_layout"

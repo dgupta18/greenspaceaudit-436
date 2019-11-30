@@ -1,12 +1,20 @@
 package com.example.green_space_audits.mainactivity
 
+import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Criteria
+import android.location.LocationManager
+import android.location.LocationListener
+import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.*
 import com.google.firebase.auth.FirebaseAuth
 import android.util.Log
+import androidx.core.app.ActivityCompat
 import com.google.firebase.database.*
 
 class AddGreenSpaceActivity : AppCompatActivity() {
@@ -27,6 +35,10 @@ class AddGreenSpaceActivity : AppCompatActivity() {
     private lateinit var usersDatabase: DatabaseReference
     private lateinit var username: String
     private lateinit var userComments: MutableMap<String, Comment>
+    private lateinit var locationManager: LocationManager
+    private lateinit var locationListener: LocationListener
+    private var lat = 0.0
+    private var long = 0.0
 
     private val quality: Quality
         get() {
@@ -59,7 +71,6 @@ class AddGreenSpaceActivity : AppCompatActivity() {
         get() {
             when (quietRG.checkedRadioButtonId) {
                 R.id.yesQuiet -> {
-                    Log.i("QUIET: ", "***************************")
                     return true
                 }
                 else -> {
@@ -101,6 +112,30 @@ class AddGreenSpaceActivity : AppCompatActivity() {
         usersDatabase = FirebaseDatabase.getInstance().getReference("Users")
 
         user = FirebaseAuth.getInstance().currentUser!!.uid
+
+        locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        locationListener = object : LocationListener {
+            override fun onLocationChanged(location: Location) {
+                lat = location.latitude
+                long = location.longitude
+            }
+            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+            override fun onProviderEnabled(provider: String) {}
+            override fun onProviderDisabled(provider: String) {}
+        }
+
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                1
+            )
+            return
+        }
+
+        locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null)
 
         // use an addValueListener to get the current user's username
         usersDatabase.addValueEventListener(object : ValueEventListener {
@@ -159,28 +194,43 @@ class AddGreenSpaceActivity : AppCompatActivity() {
 
                 }
 
+                // TODO I don't know how likely it is that the location can't be found. Do we need to worry about this?
+                if(lat == 0.0 && long == 0.0){
+                    Toast.makeText(this, "Unable to find location", Toast.LENGTH_LONG).show()
+                } else {
+                    // create a green space object
+                    val newGS = GreenSpace(
+                        name,
+                        user,
+                        lat.toFloat(),
+                        long.toFloat(),
+                        acres,
+                        (quality.ordinal + 1).toFloat(),
+                        1,
+                        recreationType,
+                        commentsList,
+                        isQuiet,
+                        isNearHazards
+                    )
 
-                // create a green space object
-                // TODO: figure out how to get the lat long values
-                // use the users location ^
-                val newGS = GreenSpace(name, user, 0.toFloat(), 0.toFloat(), acres, (quality.ordinal + 1).toFloat(), 1, recreationType, commentsList, isQuiet, isNearHazards)
+                    Log.i("NEW GREEN SPACE", "GS: $newGS")
+                    Log.i("NEW GREEN SPACE", "user: " + usersDatabase.child(user))
 
-                Log.d("NEW GREEN SPACE", "GS: $newGS")
-                Log.d("NEW GREEN SPACE", "user: " + usersDatabase.child(user))
+                    //getting a unique id using push().getKey() method
+                    //it will create a unique id and we will use it as the primary key for our green space
+                    val greenSpaceID = gsDatabase.push().key
 
-                //getting a unique id using push().getKey() method
-                //it will create a unique id and we will use it as the primary key for our green space
-                val greenSpaceID = gsDatabase.push().key
+                    // add the new green space to the database
+                    gsDatabase.child(greenSpaceID!!).setValue(newGS)
 
-                // add the new green space to the database
-                gsDatabase.child(greenSpaceID!!).setValue(newGS)
+                    Toast.makeText(this, "Green space added", Toast.LENGTH_LONG).show()
 
-                Toast.makeText(this, "Green space added", Toast.LENGTH_LONG).show()
-
-                // TODO: which activity do we want to launch?
-                val enter = Intent(this@AddGreenSpaceActivity, DisplayGreenSpaceActivity::class.java)
-                enter.putExtra("gsID", greenSpaceID)
-                startActivity(enter)
+                    // TODO: which activity do we want to launch?
+                    val enter =
+                        Intent(this@AddGreenSpaceActivity, DisplayGreenSpaceActivity::class.java)
+                    enter.putExtra("gsID", greenSpaceID)
+                    startActivity(enter)
+                }
             } else {
                 Toast.makeText(this, "Please enter the acreage", Toast.LENGTH_LONG).show()
             }
