@@ -2,22 +2,67 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:gravity="center_horizontal"
+    >
 
-    <TextView
-        android:id="@+id/profile_name"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    <!-- name & email -->
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:gravity="center"
+        android:background="#388E3C"
+        android:layout_marginBottom="32dp"
+        >
 
-    <TextView
-        android:id="@+id/profile_points"
-        android:textAlignment="center"
-        android:textStyle="bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="#CCFFB5"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/profile_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 
+    <!-- points, favorites, badges -->
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="230dp"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:background="@drawable/points_button" >
+
+        <TextView
+            android:id="@+id/profile_points"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="#388E3C"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/profile_points_str"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="points"
+            android:textAlignment="center"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
 </LinearLayout>
