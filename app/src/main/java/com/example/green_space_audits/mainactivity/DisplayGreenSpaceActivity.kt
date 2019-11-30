@@ -17,7 +17,7 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
     private lateinit var quietTV: TextView
     private lateinit var hazardsTV: TextView
     private lateinit var gsDatabase: DatabaseReference
-
+    private lateinit var greenspaceID: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,15 +33,20 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
         quietTV = findViewById<TextView>(R.id.quietView)
         hazardsTV = findViewById<TextView>(R.id.hazardsView)
         val context = this
+        greenspaceID = intent.getStringExtra("gsID")
+
+        // this is for testing purposes
+//        greenspaceID = "-Luk55Tvcj5CjArCxliA"
+//        greenspaceID = "-Luxf6N0TQ4dDATfyYQY"
 
 
         // use an addValueListener to get the current user's username
         gsDatabase.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                nameTV.text = dataSnapshot.child("-Luk55Tvcj5CjArCxliA").getValue<GreenSpace>(GreenSpace::class.java)!!.gsName
-                acresTV.text = dataSnapshot.child("-Luk55Tvcj5CjArCxliA").getValue<GreenSpace>(GreenSpace::class.java)!!.gsAcres.toString()
+                nameTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsName
+                acresTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsAcres.toString()
 
-                val qual = (dataSnapshot.child("-Luk55Tvcj5CjArCxliA").getValue<GreenSpace>(GreenSpace::class.java)!!.gsAvgQuality + 0.5).toInt()
+                val qual = (dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsAvgQuality + 0.5).toInt()
                 if(qual == 1){
                     qualityTV.text = "Low"
                 } else if(qual == 2) {
@@ -50,21 +55,22 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
                     qualityTV.text = "High"
                 }
 
-                typeTV.text = dataSnapshot.child("-Luk55Tvcj5CjArCxliA").getValue<GreenSpace>(GreenSpace::class.java)!!.gsType.displayStr
+                typeTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsType.displayStr
 
-                if(dataSnapshot.child("-Luk55Tvcj5CjArCxliA").getValue<GreenSpace>(GreenSpace::class.java)!!.isQuiet) {
+                Log.i("QUIET: ", "" + dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsIsQuiet)
+                if(dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsIsQuiet) {
                     quietTV.text = "Quiet"
                 } else {
                     quietTV.text = "Not quiet"
                 }
 
-                if(dataSnapshot.child("-Luk55Tvcj5CjArCxliA").getValue<GreenSpace>(GreenSpace::class.java)!!.isNearHazards) {
+                if(dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsIsNearHazards) {
                     hazardsTV.text = "Near hazards"
                 } else {
                     hazardsTV.text = "Not near hazards"
                 }
 
-                for(entry in dataSnapshot.child("-Luk55Tvcj5CjArCxliA").getValue<GreenSpace>(GreenSpace::class.java)!!.gsComments){
+                for(entry in dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsComments){
                     val commentTV = TextView(context)
                     val authorTV = TextView(context)
                     commentTV.textSize = 20f

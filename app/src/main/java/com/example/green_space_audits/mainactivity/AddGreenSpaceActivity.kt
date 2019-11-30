@@ -59,6 +59,7 @@ class AddGreenSpaceActivity : AppCompatActivity() {
         get() {
             when (quietRG.checkedRadioButtonId) {
                 R.id.yesQuiet -> {
+                    Log.i("QUIET: ", "***************************")
                     return true
                 }
                 else -> {
@@ -140,8 +141,6 @@ class AddGreenSpaceActivity : AppCompatActivity() {
                     // get a unique ID for the comment
                     val commentID = gsDatabase.push().key
 
-//                    val usersComments = usersDatabase.child(user).child("uComments") as MutableMap<String, Comment>
-
                     // check if the comment anonymously button is checked,
                     // create a comment object, and add it to the comments list
                     if(anonButton.isChecked){
@@ -166,8 +165,6 @@ class AddGreenSpaceActivity : AppCompatActivity() {
                 // use the users location ^
                 val newGS = GreenSpace(name, user, 0.toFloat(), 0.toFloat(), acres, (quality.ordinal + 1).toFloat(), 1, recreationType, commentsList, isQuiet, isNearHazards)
 
-                // TODO: add newGS to the database
-                // I don't want to actually add anything until we decide what structure we want
                 Log.d("NEW GREEN SPACE", "GS: $newGS")
                 Log.d("NEW GREEN SPACE", "user: " + usersDatabase.child(user))
 
@@ -182,7 +179,8 @@ class AddGreenSpaceActivity : AppCompatActivity() {
 
                 // TODO: which activity do we want to launch?
                 val enter = Intent(this@AddGreenSpaceActivity, DisplayGreenSpaceActivity::class.java)
-//                startActivity(enter)
+                enter.putExtra("gsID", greenSpaceID)
+                startActivity(enter)
             } else {
                 Toast.makeText(this, "Please enter the acreage", Toast.LENGTH_LONG).show()
             }

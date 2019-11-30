@@ -9,8 +9,8 @@ data class GreenSpace (val gsName: String = "",
                        val numRankings: Int = 0,
                        val gsType: Recreation = Recreation.NATUREBASED,
                        val gsComments: MutableMap<String, Comment> = mutableMapOf<String, Comment>(),
-                       val isQuiet: Boolean = false,
-                       val isNearHazards: Boolean = false)
+                       val gsIsQuiet: Boolean = false,
+                       val gsIsNearHazards: Boolean = false)
 
 enum class Quality {
     LOW, MED, HIGH
