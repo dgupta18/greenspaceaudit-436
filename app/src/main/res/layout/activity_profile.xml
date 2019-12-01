@@ -2,22 +2,184 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:gravity="center_horizontal"
+    >
 
-    <TextView
-        android:id="@+id/profile_name"
-        android:textAlignment="center"
-        android:textStyle="bold"
+    <!-- name & email -->
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:gravity="center"
+        android:background="#388E3C"
+        android:layout_marginBottom="28dp"
+        >
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/profile_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="#CCFFB5"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+
+    <!-- points -->
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="230dp"
+        android:layout_height="56dp"
+        android:gravity="center"
+        android:background="@drawable/points_button" >
+
+        <TextView
+            android:id="@+id/profile_points"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="#388E3C"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/profile_points_str"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="points"
+            android:textAlignment="center"
+            android:textSize="26sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- badges -->
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="160dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginHorizontal="24dp"
+        >
 
-    <TextView
-        android:id="@+id/profile_points"
-        android:textAlignment="center"
-        android:textStyle="bold"
+        <TextView
+            android:id="@+id/badges_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Badges"
+            android:textColor="#388E3C"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp"/>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/badges_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="110dp"-->
+<!--                    android:layout_height="115dp"-->
+<!--                    >-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/badge_img"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="85dp"-->
+<!--                        android:src="@drawable/badge_icon" />-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_below="@id/badge_img"-->
+<!--                        android:layout_marginTop="3dp"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:text="badgename"-->
+<!--                        android:textSize="20sp" />-->
+
+<!--                </RelativeLayout>-->
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+    </LinearLayout>
+
+    <!-- favorites -->
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="160dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginHorizontal="24dp"
+        >
 
+        <TextView
+            android:id="@+id/favorites_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Favorites"
+            android:textColor="#388E3C"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp" />
 
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/favorites_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+<!--                <RelativeLayout-->
+<!--                    android:layout_width="110dp"-->
+<!--                    android:layout_height="115dp"-->
+<!--                    >-->
+
+<!--                    <ImageView-->
+<!--                        android:id="@+id/badge_img"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="85dp"-->
+<!--                        android:src="@drawable/badge_icon" />-->
+
+<!--                    <TextView-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_below="@id/badge_img"-->
+<!--                        android:layout_marginTop="3dp"-->
+<!--                        android:textAlignment="center"-->
+<!--                        android:text="badgename"-->
+<!--                        android:textSize="20sp" />-->
+
+<!--                </RelativeLayout>-->
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+    </LinearLayout>
 
 </LinearLayout>

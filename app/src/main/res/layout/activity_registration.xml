@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".RegistrationActivity"
-    android:background="@drawable/home_background"
+    android:background="@drawable/home_background_edited"
     >
 
     <TextView
