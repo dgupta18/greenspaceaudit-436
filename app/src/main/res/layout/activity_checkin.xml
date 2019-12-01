@@ -5,92 +5,108 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingLeft="24dp"
-    android:paddingTop="64dp"
-    android:paddingRight="24dp"
-    android:paddingBottom="24dp"
     tools:context=".CheckinActivity">
 
-    <TextView
-        android:id="@+id/nameView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:padding="30sp"
-        android:text="Check in to "
-        android:textColor="@color/colorPrimary"
-        android:textSize="36sp" />
-
-    <TextView
-        android:id="@+id/quality"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="8dp"
-        android:text="How would you rank the quality of this green space?"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="22sp" />
-
-    <RadioGroup
-        android:id="@+id/qualityGroup"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:orientation="horizontal"
-        android:paddingBottom="10sp">
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingTop="64dp"
+        android:paddingRight="16dp">
 
-        <RadioButton
-            android:id="@+id/qualityHigh"
+        <TextView
+            android:id="@+id/nameView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="High"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:padding="30sp"
+            android:text="Check in to "
+            android:textColor="@color/colorPrimary"
+            android:textSize="36sp" />
+
+        <TextView
+            android:id="@+id/quality"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="8dp"
+            android:text="How would you rank the quality of this green space?"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="22sp" />
+
+        <RadioGroup
+            android:id="@+id/qualityGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:orientation="horizontal"
+            android:paddingBottom="10sp">
+
+            <RadioButton
+                android:id="@+id/qualityHigh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="High"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <RadioButton
+                android:id="@+id/qualityMed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Medium"
+                android:textColor="@color/colorPrimaryDark" />
+
+            <RadioButton
+                android:id="@+id/qualityLow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Low"
+                android:textColor="@color/colorPrimaryDark" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/commentLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="8dp"
+            android:text="Do you have any comments?"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="22sp" />
+
+        <EditText
+            android:id="@+id/comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Comments (optional)" />
+
+        <CheckBox
+            android:id="@+id/anonComment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Comment Anonymously"
             android:textColor="@color/colorPrimaryDark" />
 
-        <RadioButton
-            android:id="@+id/qualityMed"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/finish"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Medium"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/points_button"
+            android:text="Finish Check-in" />
+    </LinearLayout>
 
-        <RadioButton
-            android:id="@+id/qualityLow"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Low"
-            android:textColor="@color/colorPrimaryDark"/>
-    </RadioGroup>
-
-    <TextView
-        android:id="@+id/commentLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="8dp"
-        android:text="Do you have any comments?"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="22sp" />
-
-    <EditText
-        android:id="@+id/comment"
+    <View
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Comments (optional)" />
+        android:layout_weight="1" />
 
-    <CheckBox
-        android:id="@+id/anonComment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Comment Anonymously"
-        android:textColor="@color/colorPrimaryDark" />
-
-    <Button
-        android:id="@+id/finish"
+    <layout.NavBar
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Finish Check-in" />
-
+        android:layout_height="56dp" />
 </LinearLayout>
