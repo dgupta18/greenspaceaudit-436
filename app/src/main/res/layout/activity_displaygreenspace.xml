@@ -1,132 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout android:layout_height="match_parent" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_vertical"
     android:orientation="vertical"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:paddingLeft="24dp"
+    android:paddingTop="64dp"
+    android:paddingRight="24dp"
+    android:paddingBottom="24dp"
+    android:layout_weight="1"
+    tools:context=".DisplayGreenSpaceActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <TextView
+        android:id="@+id/nameView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Mckeldin Mall"
+        android:textColor="@color/colorPrimary"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/typeView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="28sp"
+        android:text="People-powered"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="22sp" />
+
+    <!--    TODO: do we want to add a picture of the green space on maps here? if so, how do we do that? -->
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical"
-        android:orientation="vertical"
-        android:paddingLeft="24dp"
-        android:paddingTop="64dp"
-        android:paddingRight="24dp"
-        android:paddingBottom="24dp"
-        android:layout_weight="1"
-        tools:context=".DisplayGreenSpaceActivity">
+        android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/nameView"
+            android:id="@+id/qualityLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Mckeldin Mall"
-            android:textColor="@color/colorPrimary"
-            android:textSize="36sp" />
-
-        <TextView
-            android:id="@+id/typeView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:paddingBottom="28sp"
-            android:text="People-powered"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="22sp" />
-
-        <!--    TODO: do we want to add a picture of the green space on maps here? if so, how do we do that? -->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/qualityLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Quality: "
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/qualityView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Low"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="22sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/acresLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Acreage: "
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="22sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/acresView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="56.7"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="22sp" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/quietView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Quiet"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="22sp" />
-
-        <TextView
-            android:id="@+id/hazardsView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Near Hazards"
-            android:textColor="@color/colorPrimaryDark"
-            android:textSize="22sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingTop="16dp"
-            android:text="Comments:"
+            android:text="Quality: "
             android:textColor="@color/colorPrimaryDark"
             android:textSize="22sp"
             android:textStyle="bold" />
 
-        <ScrollView
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/qualityView"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            >
-
-            <LinearLayout
-                android:id="@+id/linear_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:textColor="@color/colorPrimaryDark">
-
-
-            </LinearLayout>
-        </ScrollView>
+            android:text="Low"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="22sp" />
 
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/acresLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Acreage: "
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/acresView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="56.7"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="22sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/quietView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Quiet"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/hazardsView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Near Hazards"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="22sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:text="Comments:"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:textColor="@color/colorPrimaryDark">
+
+
+        </LinearLayout>
+    </ScrollView>
 
     <layout.NavBar
     android:layout_height="56dp"

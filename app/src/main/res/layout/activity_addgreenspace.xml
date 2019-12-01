@@ -201,7 +201,11 @@
             android:background="@drawable/points_button"
             android:text="Save Green Space" />
 
-    </LinearLayout>
+    <CheckBox
+        android:id="@+id/anonComment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Comment Anonymously" />
 
     <layout.NavBar
         android:layout_height="56dp"
