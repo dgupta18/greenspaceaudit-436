@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="High"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColor="@color/colorPrimaryDark" />
 
             <RadioButton
                 android:id="@+id/qualityMed"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="Medium"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColor="@color/colorPrimaryDark" />
 
             <RadioButton
                 android:id="@+id/qualityLow"
@@ -152,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="No"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColor="@color/colorPrimaryDark" />
         </RadioGroup>
 
         <TextView
@@ -186,7 +186,7 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="No"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textColor="@color/colorPrimaryDark" />
         </RadioGroup>
 
         <EditText
@@ -209,6 +209,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/points_button"
             android:text="Save Green Space" />
     </LinearLayout>
