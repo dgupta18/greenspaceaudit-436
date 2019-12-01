@@ -230,6 +230,7 @@ class AddGreenSpaceActivity : AppCompatActivity() {
                         Intent(this@AddGreenSpaceActivity, DisplayGreenSpaceActivity::class.java)
                     enter.putExtra("gsID", greenSpaceID)
                     startActivity(enter)
+                    overridePendingTransition(0, 0)
                 }
             } else {
                 Toast.makeText(this, "Please enter the acreage", Toast.LENGTH_LONG).show()

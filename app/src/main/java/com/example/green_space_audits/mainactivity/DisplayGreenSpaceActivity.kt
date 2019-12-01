@@ -32,11 +32,12 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
         typeTV = findViewById<TextView>(R.id.typeView)
         quietTV = findViewById<TextView>(R.id.quietView)
         hazardsTV = findViewById<TextView>(R.id.hazardsView)
+
         val context = this
-//        greenspaceID = intent.getStringExtra("gsID")
+        greenspaceID = intent.getStringExtra("gsID")
 
         // this is for testing purposes
-        greenspaceID = "-Luk55Tvcj5CjArCxliA"
+//        greenspaceID = "-Luk55Tvcj5CjArCxliA"
 //        greenspaceID = "-Luxf6N0TQ4dDATfyYQY"
 
         val commentsSet = mutableSetOf<String>()
@@ -44,6 +45,12 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
         // use an addValueListener to get the current user's username
         gsDatabase.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
+                Log.i("DISPLAY: ", "id: " + greenspaceID)
+                Log.i("DISPLAY: ", "nameTv: " + nameTV.toString())
+                Log.i("DISPLAY: ", "child: " + dataSnapshot.child(greenspaceID).toString())
+                Log.i("DISPLAY: ", "getValue: " + dataSnapshot.child(greenspaceID).getValue(GreenSpace::class.java).toString())
+                Log.i("DISPLAY: ", "gsName: " + dataSnapshot.child(greenspaceID).getValue(GreenSpace::class.java)!!.gsName)
+
                 nameTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsName
                 acresTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsAcres.toString()
 
@@ -96,9 +103,6 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
             override fun onCancelled(databaseError: DatabaseError) {
             }
         })
-
-
-
 
     }
 

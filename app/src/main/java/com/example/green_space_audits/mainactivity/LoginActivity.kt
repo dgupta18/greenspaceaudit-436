@@ -69,9 +69,9 @@ class LoginActivity : AppCompatActivity() {
                     val uid = mAuth?.uid
                     Log.d("Test", "Test")
 //                    val enter = Intent(this@LoginActivity, MapsActivity::class.java)
-                    val enter = Intent(this@LoginActivity, CheckinActivity::class.java)
+                    val enter = Intent(this@LoginActivity, MapsActivity::class.java)
                     startActivity(enter)
-
+                    overridePendingTransition(0, 0)
                 }else{
                     Toast.makeText(
                         applicationContext,
