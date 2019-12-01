@@ -62,7 +62,7 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
                 if(dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsIsQuiet) {
                     quietTV.text = "Quiet"
                 } else {
-                    quietTV.text = "Not quiet"
+                    quietTV.text = "Noisy"
                 }
 
                 if(dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsIsNearHazards) {
