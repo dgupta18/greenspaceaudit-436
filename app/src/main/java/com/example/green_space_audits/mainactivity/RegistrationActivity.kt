@@ -76,12 +76,13 @@ class RegistrationActivity : AppCompatActivity() {
                     progressBar!!.visibility = View.GONE
 
 
-                    val userBadges = mutableListOf<String>("badge0", "badge1", "badge2", "badge3", "badge4")
-                    val userFavorites = mutableMapOf<String,String>("-LukAbc95Yp8UHnEIyVq" to "Green Space", "-LukBGCqBVsn8R3SxJA2" to "Hello", "-LuzHNULfgRhBeBuWSKd" to "The Quad")
-                    Log.i("userBadges: ", userBadges.toString())
-                    Log.i("userFavorites: ", userFavorites.toString())
+//                    val userBadges = mutableListOf<String>("badge0", "badge1", "badge2", "badge3", "badge4")
+//                    val userFavorites = mutableMapOf<String,String>("-LukAbc95Yp8UHnEIyVq" to "Green Space", "-LukBGCqBVsn8R3SxJA2" to "Hello", "-LuzHNULfgRhBeBuWSKd" to "The Quad")
+//                    Log.i("userBadges: ", userBadges.toString())
+//                    Log.i("userFavorites: ", userFavorites.toString())
 
-                    val user = User(name, email, password, false, 0, ArrayList(), userBadges, userFavorites, mutableMapOf<String, ArrayList<String>>(), mutableMapOf<String,Comment>())
+//                    val user = User(name, email, password, false, 0, ArrayList(), userBadges, userFavorites, mutableMapOf<String, ArrayList<String>>(), mutableMapOf<String,Comment>())
+                    val user = User(name, email, password, false, 0, ArrayList(), mutableListOf<String>(), mutableMapOf<String,String>(), mutableMapOf<String, ArrayList<String>>(), mutableMapOf<String,Comment>())
                     Log.i("USER: ", user.toString())
 
                     FirebaseDatabase.getInstance().getReference("Users")
