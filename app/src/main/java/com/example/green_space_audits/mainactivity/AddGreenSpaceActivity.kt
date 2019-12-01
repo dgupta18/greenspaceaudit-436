@@ -137,7 +137,7 @@ class AddGreenSpaceActivity : AppCompatActivity() {
 
         locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null)
 
-        // use an addValueListener to get the current user's username
+        // use an addValueListener to get the current user's username and comments
         usersDatabase.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 username = dataSnapshot.child(user).getValue<User>(User::class.java)!!.userName
