@@ -13,7 +13,7 @@ class CheckinActivity : AppCompatActivity() {
     private lateinit var nameTV: TextView
     private lateinit var qualityRG: RadioGroup
     private lateinit var commentET: EditText
-    private lateinit var anonButton: RadioButton
+    private lateinit var anonButton: CheckBox
     private lateinit var finishButton: Button
     private lateinit var greenspaceID: String
     private lateinit var gsDatabase: DatabaseReference
@@ -47,7 +47,7 @@ class CheckinActivity : AppCompatActivity() {
         nameTV = findViewById<TextView>(R.id.nameView)
         qualityRG = findViewById<RadioGroup>(R.id.qualityGroup)
         commentET = findViewById<EditText>(R.id.comment)
-        anonButton = findViewById<RadioButton>(R.id.anonComment)
+        anonButton = findViewById<CheckBox>(R.id.anonComment)
         finishButton = findViewById<Button>(R.id.finish)
 
         //greenspaceID = intent.getStringExtra("gsID")

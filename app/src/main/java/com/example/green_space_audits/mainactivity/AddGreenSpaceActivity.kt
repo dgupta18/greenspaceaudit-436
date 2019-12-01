@@ -25,7 +25,7 @@ class AddGreenSpaceActivity : AppCompatActivity() {
     private lateinit var recreationTV: TextView
     private lateinit var recreationRG: RadioGroup
     private lateinit var commentET: EditText
-    private lateinit var anonButton: RadioButton
+    private lateinit var anonButton: CheckBox
     private lateinit var saveButton: Button
     private lateinit var user: String
     private lateinit var quietRG: RadioGroup
@@ -101,7 +101,7 @@ class AddGreenSpaceActivity : AppCompatActivity() {
         recreationTV = findViewById<TextView>(R.id.recreation)
         recreationRG = findViewById<RadioGroup>(R.id.recreationGroup)
         commentET = findViewById<EditText>(R.id.comment)
-        anonButton = findViewById<RadioButton>(R.id.anonComment)
+        anonButton = findViewById<CheckBox>(R.id.anonComment)
         saveButton = findViewById<Button>(R.id.save)
         hazardsRG = findViewById<RadioGroup>(R.id.hazardsGroup)
         quietRG = findViewById<RadioGroup>(R.id.quietGroup)
