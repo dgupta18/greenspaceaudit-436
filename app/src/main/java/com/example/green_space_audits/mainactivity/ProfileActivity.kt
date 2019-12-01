@@ -89,13 +89,13 @@ class ProfileActivity : AppCompatActivity() {
 
                     // create relative layout for new badge
                     val newBadge = RelativeLayout(context)
-                    newBadge.layoutParams = RelativeLayout.LayoutParams((110 * scale + 0.5f).toInt(), (115 * scale + 0.5f).toInt())
+                    newBadge.layoutParams = RelativeLayout.LayoutParams((100 * scale + 0.5f).toInt(), (120 * scale + 0.5f).toInt())
 
                     // add badge icon
                     val icon = ImageView(context)
                     icon.setImageResource(R.drawable.badge_icon)
                     icon.id = R.id.img_id
-                    icon.layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,(85 * scale + 0.5f).toInt())
+                    icon.layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,(80 * scale + 0.5f).toInt())
                     newBadge.addView(icon)
                     Log.i("ADDED ICON: ", icon.toString())
 
@@ -132,18 +132,20 @@ class ProfileActivity : AppCompatActivity() {
 
                     // create relative layout for new favorite
                     val newFav = RelativeLayout(context)
-                    newFav.layoutParams = RelativeLayout.LayoutParams((110 * scale + 0.5f).toInt(), (115 * scale + 0.5f).toInt())
+                    newFav.layoutParams = RelativeLayout.LayoutParams((100 * scale + 0.5f).toInt(), (120 * scale + 0.5f).toInt())
                     newFav.setOnClickListener{
                         val intent = Intent(this@ProfileActivity, DisplayGreenSpaceActivity::class.java)
                         intent.putExtra("gsID", favId)
                         startActivity(intent)
                     }
 
-                    // add badge icon
+                    // add favorites icon
                     val icon = ImageView(context)
                     icon.setImageResource(R.drawable.favorite_icon)
+                    icon.scaleType = ImageView.ScaleType.FIT_CENTER
+                    icon.setPadding(10,10,10,10)
                     icon.id = R.id.img_id
-                    icon.layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,(85 * scale + 0.5f).toInt())
+                    icon.layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,(80 * scale + 0.5f).toInt())
                     newFav.addView(icon)
                     Log.i("ADDED ICON: ", icon.toString())
 

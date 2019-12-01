@@ -41,10 +41,12 @@ class MainActivity : AppCompatActivity() {
         registerBtn!!.setOnClickListener {
             val intent = Intent(this@MainActivity, RegistrationActivity::class.java)
             startActivity(intent)
+            overridePendingTransition(0, 0)
         }
         loginBtn!!.setOnClickListener {
             val what = Intent(this@MainActivity,LoginActivity::class.java)
             startActivity(what)
+            overridePendingTransition(0, 0)
         }
     }
 }

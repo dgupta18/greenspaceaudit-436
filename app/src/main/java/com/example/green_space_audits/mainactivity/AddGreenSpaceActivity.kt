@@ -183,6 +183,7 @@ class AddGreenSpaceActivity : AppCompatActivity() {
                 // TODO: which activity do we want to launch?
                 val enter = Intent(this@AddGreenSpaceActivity, DisplayGreenSpaceActivity::class.java)
 //                startActivity(enter)
+//                overridePendingTransition(0, 0)
             } else {
                 Toast.makeText(this, "Please enter the acreage", Toast.LENGTH_LONG).show()
             }

@@ -23,7 +23,7 @@ import java.nio.charset.Charset
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
-
+    private lateinit var profileFragment: ProfileActivity
     private lateinit var locationManager: LocationManager
     private lateinit var locationProvider: String
     private lateinit var mMap: GoogleMap

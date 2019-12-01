@@ -71,7 +71,7 @@ class LoginActivity : AppCompatActivity() {
 //                    val enter = Intent(this@LoginActivity, MapsActivity::class.java)
                     val enter = Intent(this@LoginActivity, MapsActivity::class.java)
                     startActivity(enter)
-
+                    overridePendingTransition(0, 0)
                 }else{
                     Toast.makeText(
                         applicationContext,
