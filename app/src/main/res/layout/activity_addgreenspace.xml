@@ -3,12 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_vertical"
-    android:padding="16dp"
     android:layout_weight="1"
-    tools:context=".AddGreenSpaceActivity"
-    >
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    tools:context=".AddGreenSpaceActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingTop="64dp"
+        android:paddingRight="16dp">
 
         <TextView
             android:id="@+id/addGSTitle"
@@ -19,15 +25,16 @@
             android:layout_marginBottom="4dp"
             android:text="Add a New Green Space!"
             android:textAlignment="center"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textColor="@color/colorPrimary"
+            android:textSize="30sp" />
 
         <EditText
             android:id="@+id/nameET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:textSize="16dp"
-            android:hint="Name" />
+            android:hint="Name"
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/quality"
@@ -36,36 +43,39 @@
             android:layout_alignParentLeft="true"
             android:layout_marginTop="8dp"
             android:text="Quality"
-            android:textSize="18dp"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp" />
 
         <RadioGroup
             android:id="@+id/qualityGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:orientation="horizontal" >
-            <!--        android:layout_below="@id/quality"-->
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/qualityHigh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="High" />
+                android:text="High"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <RadioButton
                 android:id="@+id/qualityMed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="Medium" />
+                android:text="Medium"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <RadioButton
                 android:id="@+id/qualityLow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="Low" />
+                android:text="Low"
+                android:textColor="@color/colorPrimaryDark" />
         </RadioGroup>
 
         <TextView
@@ -74,40 +84,42 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginTop="8dp"
-            android:textSize="18dp"
             android:text="Recreation type:"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp" />
 
         <RadioGroup
             android:id="@+id/recreationGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:orientation="horizontal" >
-            <!--        android:layout_below="@id/recreation"-->
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/peopleRec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="People-Powered" />
+                android:text="People-Powered"
+                android:textColor="@color/colorPrimaryDark" />
 
             <RadioButton
                 android:id="@+id/natureRec"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="Nature-Based" />
+                android:text="Nature-Based"
+                android:textColor="@color/colorPrimaryDark" />
         </RadioGroup>
 
         <EditText
             android:id="@+id/acresET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal"
             android:layout_marginTop="8dp"
-            android:textSize="16dp"
-            android:hint="Acres" />
+            android:hint="Acres"
+            android:inputType="numberDecimal"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16dp" />
 
         <TextView
             android:id="@+id/quiet"
@@ -115,30 +127,32 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginTop="8dp"
-            android:textSize="18dp"
             android:text="Is this space quiet?"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp" />
 
         <RadioGroup
             android:id="@+id/quietGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_below="@id/quiet"
-            android:orientation="horizontal" >
+            android:layout_alignParentLeft="true"
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/yesQuiet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Yes" />
+                android:text="Yes"
+                android:textColor="@color/colorPrimaryDark" />
 
             <RadioButton
                 android:id="@+id/noQuiet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="No" />
+                android:text="No"
+                android:textColor="@color/colorPrimaryDark"/>
         </RadioGroup>
 
         <TextView
@@ -147,45 +161,48 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_marginTop="8dp"
-            android:textSize="18dp"
             android:text="Is this space near any hazards?"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="20sp" />
 
         <RadioGroup
             android:id="@+id/hazardsGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
             android:layout_below="@id/hazards"
-            android:orientation="horizontal" >
+            android:layout_alignParentLeft="true"
+            android:orientation="horizontal">
 
             <RadioButton
                 android:id="@+id/yesHazards"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Yes" />
+                android:text="Yes"
+                android:textColor="@color/colorPrimaryDark" />
 
             <RadioButton
                 android:id="@+id/noHazards"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="No" />
+                android:text="No"
+                android:textColor="@color/colorPrimaryDark"/>
         </RadioGroup>
 
         <EditText
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp"
             android:layout_marginTop="8dp"
-            android:hint="Comments (optional)" />
+            android:hint="Comments (optional)"
+            android:textSize="16dp" />
 
         <CheckBox
             android:id="@+id/anonComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Comment Anonymously" />
+            android:text="Comment Anonymously"
+            android:textColor="@color/colorPrimaryDark" />
 
         <Button
             android:id="@+id/save"
@@ -194,11 +211,15 @@
             android:layout_marginHorizontal="50dp"
             android:background="@drawable/points_button"
             android:text="Save Green Space" />
+    </LinearLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
 
     <layout.NavBar
-        android:layout_height="56dp"
         android:layout_width="match_parent"
-        />
+        android:layout_height="56dp" />
 </LinearLayout>
 
