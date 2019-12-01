@@ -5,10 +5,10 @@ data class User (
     val userEmail: String = "",
     val userPassword: String = "",
     val userIsAdmin: Boolean = false,
-    val uPoints: Int = 0,
-    val uGreenSpaces: ArrayList<String> = arrayListOf<String>(),
-    val uBadges: ArrayList<String> = arrayListOf<String>(),
-    val uFavorites: ArrayList<String> = arrayListOf<String>(),
-    val uCheckins: MutableMap<String, ArrayList<String>> = mutableMapOf<String, ArrayList<String>>(),
-    val uComments: MutableMap<String, Comment> = mutableMapOf<String, Comment>()
+    val userPoints: Int = 0,
+    val userGreenSpaces: MutableList<String> = mutableListOf<String>(),
+    val userBadges: MutableList<String> = mutableListOf<String>(),
+    val userFavorites: MutableMap<String, String> = mutableMapOf<String,String>(), // id to name
+    val userCheckins: MutableMap<String, ArrayList<String>> = mutableMapOf<String, ArrayList<String>>(),
+    val userComments: MutableMap<String, Comment> = mutableMapOf<String, Comment>()
 )
