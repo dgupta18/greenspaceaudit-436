@@ -37,9 +37,10 @@ class AddGreenSpaceActivity : AppCompatActivity() {
     private lateinit var userComments: MutableMap<String, Comment>
     private lateinit var locationManager: LocationManager
     private lateinit var locationProvider: String
-//    private lateinit var locationListener: LocationListener
     private var lat = 0.0
     private var long = 0.0
+    private var userPoints = 0
+    private var pointsEarned = 0
 
     private val quality: Quality
         get() {
@@ -132,10 +133,11 @@ class AddGreenSpaceActivity : AppCompatActivity() {
         long = lastknownLocation.longitude
 
 
-        // use an addValueListener to get the current user's username and comments
+        // use an addValueListener to get the current user's information
         usersDatabase.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 username = dataSnapshot.child(user).getValue<User>(User::class.java)!!.userName
+                userPoints = dataSnapshot.child(user).getValue<User>(User::class.java)!!.userPoints
                 if(dataSnapshot.child(user).child("uComments").value != null){
                     userComments = dataSnapshot.child(user).child("uComments").value as MutableMap<String, Comment>
                 } else {
@@ -168,6 +170,9 @@ class AddGreenSpaceActivity : AppCompatActivity() {
 
                 // check to see if the user left a comment
                 if(!TextUtils.isEmpty(commentText)){
+                    // give the user 5 points for commenting
+                    pointsEarned += 5
+
                     // get a unique ID for the comment
                     val commentID = gsDatabase.push().key
 
@@ -218,7 +223,15 @@ class AddGreenSpaceActivity : AppCompatActivity() {
                     // add the new green space to the database
                     gsDatabase.child(greenSpaceID!!).setValue(newGS)
 
-                    Toast.makeText(this, "Green space added", Toast.LENGTH_LONG).show()
+                    // give the user 10 points for checking in
+                    pointsEarned += 10
+
+                    // update the user's points
+                    usersDatabase.child(user).child("userPoints").setValue(userPoints + pointsEarned)
+
+                    Toast.makeText(this, "Added! You earned ${pointsEarned} points!", Toast.LENGTH_LONG).show()
+
+//                    Toast.makeText(this, "Green space added", Toast.LENGTH_LONG).show()
 
                     // TODO: which activity do we want to launch?
                     val enter =

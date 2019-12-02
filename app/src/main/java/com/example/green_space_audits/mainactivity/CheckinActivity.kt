@@ -27,6 +27,8 @@ class CheckinActivity : AppCompatActivity() {
     private lateinit var favoriteButton: CheckBox
     private var gsAvgQual = 0.toFloat()
     private var gsNumRankings = 0
+    private var userPoints = 0
+    private var pointsEarned = 0
 
     private val quality: Quality
         get() {
@@ -80,6 +82,7 @@ class CheckinActivity : AppCompatActivity() {
         usersDatabase.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 username = dataSnapshot.child(user).getValue<User>(User::class.java)!!.userName
+                userPoints = dataSnapshot.child(user).getValue<User>(User::class.java)!!.userPoints
                 if(dataSnapshot.child(user).child("uComments").value != null){
                     userComments = dataSnapshot.child(user).child("uComments").value as MutableMap<String, Comment>
                 } else {
@@ -106,6 +109,9 @@ class CheckinActivity : AppCompatActivity() {
 
         // check to see if the user left a comment
         if(!TextUtils.isEmpty(commentText)){
+            // give the user 5 points for commenting
+            pointsEarned += 5
+
             // get a unique ID for the comment
             val commentID = gsDatabase.push().key
 
@@ -142,9 +148,15 @@ class CheckinActivity : AppCompatActivity() {
             usersDatabase.child(user).child("userFavorites").setValue( userFavorites)
         }
 
-        Toast.makeText(this, "Check-in completed", Toast.LENGTH_LONG).show()
+        // give the user 10 points for checking in
+        pointsEarned += 10
 
-        val enter = Intent(this@CheckinActivity, ProfileActivity::class.java)
+        // update the user's points
+        usersDatabase.child(user).child("userPoints").setValue(userPoints + pointsEarned)
+
+        Toast.makeText(this, "You earned ${pointsEarned} points!", Toast.LENGTH_LONG).show()
+
+        val enter = Intent(this@CheckinActivity, MapsActivity::class.java)
         startActivity(enter)
 
     }
