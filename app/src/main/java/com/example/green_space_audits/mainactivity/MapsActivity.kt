@@ -2,6 +2,7 @@ package com.example.green_space_audits.mainactivity
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.Typeface
@@ -135,14 +136,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             var long = postSnapshot.getValue<GreenSpace>(GreenSpace::class.java)!!.gsLong.toDouble()
                             val name = postSnapshot.getValue<GreenSpace>(GreenSpace::class.java)!!.gsName
                             val info = postSnapshot.getValue<GreenSpace>(GreenSpace::class.java)!!.gsType.displayStr
+                            val acres = postSnapshot.getValue<GreenSpace>(GreenSpace::class.java)!!.gsAcres
                             val location = LatLng(lat,long)
+
+                            // calculate the radius of the circle so the area is approximately the
+                            // same as the acres of the green space
+                            // acres is multiplied by 4046.86 because an acre is 4046.86 square meters
+                            // and addCircle takes in a radius in meters
+                            val radius = Math.sqrt((acres * 4046.86) / Math.PI)
 
                             var circleOptions = CircleOptions()
                                 .center(location)
-                                .radius(400.toDouble()).fillColor(Color.GREEN).clickable(true)
+                                .radius(radius).fillColor(Color.GREEN).clickable(true)
                             mMap.addCircle(circleOptions)
 
-                            mMap.addMarker(MarkerOptions().position(location).title(name).snippet(info).alpha(0.0f))
+                            val marker = mMap.addMarker(MarkerOptions().position(location).title(name).snippet(info).alpha(0.0f))
+                            marker.setTag(gsID)
                         }
                     }
                 }
@@ -171,9 +180,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 mMap.addMarker(MarkerOptions().position(LatLng(x,y)).title(name).snippet(info).alpha(0.0f))
 
-//                mMap.setOnMarkerClickListener{
-//                    marker ->
-//                }
+                mMap.setOnMarkerClickListener{
+                    marker ->
+
+                        val gsID = marker.getTag() as String
+                    val enter =
+                        Intent(this@MapsActivity, DisplayGreenSpaceActivity::class.java)
+                    enter.putExtra("gsID", gsID)
+                    startActivity(enter)
+                    overridePendingTransition(0, 0)
+                        true
+
+
+                }
 
 //                val place = Places(name,locat,info)
 //                arrayList.add(place)
