@@ -111,7 +111,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="250dp">
 
             <LinearLayout
                 android:id="@+id/linear_layout"
@@ -119,7 +119,14 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:textColor="@color/colorPrimaryDark">
-
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="300dp"
+                    android:textSize="22sp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="300dp"
+                    android:textSize="22sp" />
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
