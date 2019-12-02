@@ -85,15 +85,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val lastknownLocation = locationManager.getLastKnownLocation(locationProvider)
         val curx = lastknownLocation.latitude
         val cury = lastknownLocation.longitude
-        val currentLocation = LatLng(38.9897, -76.9378)
+//        val currentLocation = LatLng(38.9897, -76.9378)
 
 
         // The actual one. Never delete this one
-        //map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(curx, cury), DEFAULT_ZOOM_LEVEL.toFloat()))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(curx, cury), DEFAULT_ZOOM_LEVEL.toFloat()))
 
 
 
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, DEFAULT_ZOOM_LEVEL.toFloat()))
+//        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(currentLocation, DEFAULT_ZOOM_LEVEL.toFloat()))
 
 
     }

@@ -36,7 +36,8 @@ class AddGreenSpaceActivity : AppCompatActivity() {
     private lateinit var username: String
     private lateinit var userComments: MutableMap<String, Comment>
     private lateinit var locationManager: LocationManager
-    private lateinit var locationListener: LocationListener
+    private lateinit var locationProvider: String
+//    private lateinit var locationListener: LocationListener
     private var lat = 0.0
     private var long = 0.0
 
@@ -114,16 +115,7 @@ class AddGreenSpaceActivity : AppCompatActivity() {
         user = FirebaseAuth.getInstance().currentUser!!.uid
 
         locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-
-        locationListener = object : LocationListener {
-            override fun onLocationChanged(location: Location) {
-                lat = location.latitude
-                long = location.longitude
-            }
-            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
-            override fun onProviderEnabled(provider: String) {}
-            override fun onProviderDisabled(provider: String) {}
-        }
+        locationProvider = locationManager.getBestProvider(Criteria(), true)
 
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -135,7 +127,10 @@ class AddGreenSpaceActivity : AppCompatActivity() {
             return
         }
 
-        locationManager.requestSingleUpdate(LocationManager.GPS_PROVIDER, locationListener, null)
+        val lastknownLocation = locationManager.getLastKnownLocation(locationProvider)
+        lat = lastknownLocation.latitude
+        long = lastknownLocation.longitude
+
 
         // use an addValueListener to get the current user's username and comments
         usersDatabase.addValueEventListener(object : ValueEventListener {
