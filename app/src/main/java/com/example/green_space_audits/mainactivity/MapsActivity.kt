@@ -4,11 +4,14 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.graphics.Typeface
 import android.location.Criteria
 import android.location.LocationManager
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -16,6 +19,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CircleOptions
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.database.*
+import kotlinx.android.synthetic.main.activity_displaygreenspace.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.nio.charset.Charset
@@ -27,6 +32,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var locationManager: LocationManager
     private lateinit var locationProvider: String
     private lateinit var mMap: GoogleMap
+    private lateinit var gsDatabase: DatabaseReference
+    private var alreadyAdded = arrayListOf<String>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +44,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+        gsDatabase = FirebaseDatabase.getInstance().getReference("GreenSpaces")
 
     }
 
@@ -114,6 +123,35 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
             line = fileReader.readLine()
             line = fileReader.readLine()
+
+            gsDatabase.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (postSnapshot in dataSnapshot.children) {
+                        val gsID = postSnapshot.key
+                        // check to make sure the green space isnt already on the map
+                        if(!alreadyAdded.contains(gsID)) {
+                            alreadyAdded.add(gsID!!)
+                            val lat = postSnapshot.getValue<GreenSpace>(GreenSpace::class.java)!!.gsLat.toDouble()
+                            var long = postSnapshot.getValue<GreenSpace>(GreenSpace::class.java)!!.gsLong.toDouble()
+                            val name = postSnapshot.getValue<GreenSpace>(GreenSpace::class.java)!!.gsName
+                            val info = postSnapshot.getValue<GreenSpace>(GreenSpace::class.java)!!.gsType.displayStr
+                            val location = LatLng(lat,long)
+
+                            var circleOptions = CircleOptions()
+                                .center(location)
+                                .radius(400.toDouble()).fillColor(Color.GREEN).clickable(true)
+                            mMap.addCircle(circleOptions)
+
+                            mMap.addMarker(MarkerOptions().position(location).title(name).snippet(info).alpha(0.0f))
+                        }
+                    }
+                }
+                // I'm not sure why this is necessary, but it was included in the Firebase lab
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            })
+
+
             while (line != null) {
                 var tokens = line.split(",")
                 var name = tokens[7]
@@ -133,6 +171,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 mMap.addMarker(MarkerOptions().position(LatLng(x,y)).title(name).snippet(info).alpha(0.0f))
 
+//                mMap.setOnMarkerClickListener{
+//                    marker ->
+//                }
 
 //                val place = Places(name,locat,info)
 //                arrayList.add(place)
