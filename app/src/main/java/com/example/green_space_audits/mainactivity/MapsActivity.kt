@@ -152,6 +152,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                             val marker = mMap.addMarker(MarkerOptions().position(location).title(name).snippet(info).alpha(0.0f))
                             marker.setTag(gsID)
+
+
+
                         }
                     }
                 }
@@ -179,18 +182,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
                 mMap.addMarker(MarkerOptions().position(LatLng(x,y)).title(name).snippet(info).alpha(0.0f))
+                // onInfoWindowClic
+                mMap.setOnInfoWindowClickListener {
+                        marker ->
 
-                mMap.setOnMarkerClickListener{
-                    marker ->
-
-                        val gsID = marker.getTag() as String
+                    val gsID = marker.getTag() as String
                     val enter =
                         Intent(this@MapsActivity, DisplayGreenSpaceActivity::class.java)
                     enter.putExtra("gsID", gsID)
                     startActivity(enter)
                     overridePendingTransition(0, 0)
-                        true
-
+                    true
 
                 }
 
