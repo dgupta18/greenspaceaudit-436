@@ -21,7 +21,10 @@ class CheckinActivity : AppCompatActivity() {
     private lateinit var user: String
     private lateinit var gsComments: MutableMap<String, Comment>
     private lateinit var userComments: MutableMap<String, Comment>
+    private lateinit var userFavorites: MutableMap<String, String>
+    private lateinit var gsName: String
     private lateinit var username: String
+    private lateinit var favoriteButton: CheckBox
     private var gsAvgQual = 0.toFloat()
     private var gsNumRankings = 0
 
@@ -49,11 +52,11 @@ class CheckinActivity : AppCompatActivity() {
         commentET = findViewById<EditText>(R.id.comment)
         anonButton = findViewById<CheckBox>(R.id.anonComment)
         finishButton = findViewById<Button>(R.id.finish)
+        favoriteButton = findViewById<CheckBox>(R.id.favoriteButton)
 
         //greenspaceID = intent.getStringExtra("gsID")
         // TODO this hardcoded ID is for testing only. use the intent to pass the ID ^
         greenspaceID = "-Luk55Tvcj5CjArCxliA"
-
         gsDatabase = FirebaseDatabase.getInstance().getReference("GreenSpaces")
         usersDatabase = FirebaseDatabase.getInstance().getReference("Users")
 
@@ -62,7 +65,8 @@ class CheckinActivity : AppCompatActivity() {
         // use an addValueListener to get the green space's name and comments
         gsDatabase.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                nameTV.text = "Check in to " + dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsName
+                gsName = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsName
+                nameTV.text = "Check in to " + gsName
                 gsComments = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsComments
                 gsAvgQual = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsAvgQuality
                 gsNumRankings = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.numRankings
@@ -80,6 +84,11 @@ class CheckinActivity : AppCompatActivity() {
                     userComments = dataSnapshot.child(user).child("uComments").value as MutableMap<String, Comment>
                 } else {
                     userComments = mutableMapOf<String, Comment>()
+                }
+                if(dataSnapshot.child(user).child("userFavorites").value != null){
+                    userFavorites = dataSnapshot.child(user).child("userFavorites").value as MutableMap<String, String>
+                } else {
+                    userFavorites = mutableMapOf<String, String>()
                 }
             }
             // I'm not sure why this is necessary, but it was included in the Firebase lab
@@ -128,10 +137,14 @@ class CheckinActivity : AppCompatActivity() {
         gsDatabase.child(greenspaceID).child("gsAvgQuality").setValue(newQuality)
         gsDatabase.child(greenspaceID).child("numRankings").setValue(gsNumRankings + 1)
 
+        if(favoriteButton.isChecked){
+            userFavorites[greenspaceID] = gsName
+            usersDatabase.child(user).child("userFavorites").setValue( userFavorites)
+        }
+
         Toast.makeText(this, "Check-in completed", Toast.LENGTH_LONG).show()
 
-        // TODO: which activity do we want to launch?
-        val enter = Intent(this@CheckinActivity, MapsActivity::class.java)
+        val enter = Intent(this@CheckinActivity, ProfileActivity::class.java)
         startActivity(enter)
 
     }
