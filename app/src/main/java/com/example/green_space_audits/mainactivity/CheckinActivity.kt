@@ -24,11 +24,11 @@ class CheckinActivity : AppCompatActivity() {
     private lateinit var userFavorites: MutableMap<String, String>
     private lateinit var gsName: String
     private lateinit var username: String
+    private lateinit var userBadges: MutableList<String>
     private lateinit var favoriteButton: CheckBox
     private var gsAvgQual = 0.toFloat()
     private var gsNumRankings = 0
     private var userPoints = 0
-    private var pointsEarned = 0
 
     private val quality: Quality
         get() {
@@ -82,6 +82,7 @@ class CheckinActivity : AppCompatActivity() {
         usersDatabase.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 username = dataSnapshot.child(user).getValue<User>(User::class.java)!!.userName
+                userBadges = dataSnapshot.child(user).getValue<User>(User::class.java)!!.userBadges
                 userPoints = dataSnapshot.child(user).getValue<User>(User::class.java)!!.userPoints
                 if(dataSnapshot.child(user).child("uComments").value != null){
                     userComments = dataSnapshot.child(user).child("uComments").value as MutableMap<String, Comment>
@@ -92,6 +93,12 @@ class CheckinActivity : AppCompatActivity() {
                     userFavorites = dataSnapshot.child(user).child("userFavorites").value as MutableMap<String, String>
                 } else {
                     userFavorites = mutableMapOf<String, String>()
+                }
+
+                if(userFavorites.contains(greenspaceID)){
+                    favoriteButton.setChecked(true)
+                } else {
+                    favoriteButton.setChecked(false)
                 }
             }
             // I'm not sure why this is necessary, but it was included in the Firebase lab
@@ -106,11 +113,20 @@ class CheckinActivity : AppCompatActivity() {
 
     private fun finishCheckin() {
         val commentText = commentET.text.toString()
+        var badgeEarned = false
+        var pointsEarned = 0
 
         // check to see if the user left a comment
         if(!TextUtils.isEmpty(commentText)){
             // give the user 5 points for commenting
             pointsEarned += 5
+
+            // if this is the user's first time commenting, give them the comment badge
+            if(!userBadges.contains(Badge.COMMENT.displayStr)){
+                userBadges.add(Badge.COMMENT.displayStr)
+                usersDatabase.child(user).child("userBadges").setValue(userBadges)
+                badgeEarned = true
+            }
 
             // get a unique ID for the comment
             val commentID = gsDatabase.push().key
@@ -143,8 +159,21 @@ class CheckinActivity : AppCompatActivity() {
         gsDatabase.child(greenspaceID).child("gsAvgQuality").setValue(newQuality)
         gsDatabase.child(greenspaceID).child("numRankings").setValue(gsNumRankings + 1)
 
-        if(favoriteButton.isChecked){
+        // if the favorite button is checked and the greenspace isn't already one of the users favorites,
+        // add it to their favorites list
+        if(favoriteButton.isChecked && !userFavorites.contains(greenspaceID)){
             userFavorites[greenspaceID] = gsName
+            usersDatabase.child(user).child("userFavorites").setValue( userFavorites)
+
+            // if this is the user's first time favoriting a green space, give them the favorite badge
+            if(!userBadges.contains(Badge.FAVORITE.displayStr)){
+                userBadges.add(Badge.FAVORITE.displayStr)
+                usersDatabase.child(user).child("userBadges").setValue(userBadges)
+                badgeEarned = true
+            }
+        // otherwise, if the favorites button is unchecked and the green space is in the users favorites list, remove it
+        } else if (!favoriteButton.isChecked && userFavorites.contains(greenspaceID)) {
+            userFavorites.remove(greenspaceID)
             usersDatabase.child(user).child("userFavorites").setValue( userFavorites)
         }
 
@@ -154,7 +183,20 @@ class CheckinActivity : AppCompatActivity() {
         // update the user's points
         usersDatabase.child(user).child("userPoints").setValue(userPoints + pointsEarned)
 
+        // if this is the user's first time checking in to a green space, give them the checkin badge
+        if(!userBadges.contains(Badge.CHECKIN.displayStr)){
+            userBadges.add(Badge.CHECKIN.displayStr)
+            usersDatabase.child(user).child("userBadges").setValue(userBadges)
+            badgeEarned = true
+        }
+
+        // display a toast telling the user how many points they earned
         Toast.makeText(this, "You earned ${pointsEarned} points!", Toast.LENGTH_LONG).show()
+
+        // display a toast if the user earned a badge
+        if(badgeEarned){
+            Toast.makeText(this, "You earned a new badge!", Toast.LENGTH_LONG).show()
+        }
 
         val enter = Intent(this@CheckinActivity, MapsActivity::class.java)
         startActivity(enter)

@@ -12,3 +12,10 @@ data class User (
     val userCheckins: MutableMap<String, ArrayList<String>> = mutableMapOf<String, ArrayList<String>>(),
     val userComments: MutableMap<String, Comment> = mutableMapOf<String, Comment>()
 )
+
+enum class Badge(val displayStr: String) {
+    ADD("Added a new green space"),
+    COMMENT("Added a comment"),
+    CHECKIN("Checked in to a green space"),
+    FAVORITE("Favorited a green space")
+}

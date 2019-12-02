@@ -74,6 +74,12 @@ class ProfileActivity : AppCompatActivity() {
                 emailHolder.text = email
                 pointsHolder.text = points
 
+                // add a badge for number of points earned, if applicable
+                if(currUser!!.userPoints > 50){
+                    val num = (currUser!!.userPoints / 50) * 50 // gets the highest multiple of 50 less than their current number of points
+                    badges.add("Earned ${num} points")
+                }
+
                 Log.i("BADGES: ", badges.toString())
                 if (badges.isEmpty() || badges.toString().equals("[]")) {
                     val emptyBadges = TextView(context)
