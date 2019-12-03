@@ -50,11 +50,15 @@ class MainActivity : AppCompatActivity() {
 
 
         registerBtn!!.setOnClickListener {
+            val editor = pref.edit()
+            editor.clear().commit()
             val intent = Intent(this@MainActivity, RegistrationActivity::class.java)
             startActivity(intent)
             overridePendingTransition(0, 0)
         }
         loginBtn!!.setOnClickListener {
+            val editor = pref.edit()
+            editor.clear().commit()
 //            val what = Intent(this@MainActivity,LoginActivity::class.java)
             val what = Intent(this@MainActivity,LoginActivity::class.java)
             startActivity(what)
