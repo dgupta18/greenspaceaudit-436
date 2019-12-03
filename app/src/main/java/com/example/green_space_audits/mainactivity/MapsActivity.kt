@@ -147,20 +147,31 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                             // color circle based on quality
                             val qual = (dataSnapshot.child(gsID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsAvgQuality + 0.5).toInt()
+                            var nature = (dataSnapshot.child(gsID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsType).toString()
                             if(qual == 1){
                                 var circleOptions = CircleOptions()
                                     .center(location)
                                     .radius(radius).fillColor(0xFFCCFFB5.toInt()).clickable(true)
+                                if(nature.equals("PEOPLEPOWERED") == false){
+                                    circleOptions.strokeColor(Color.BLUE)
+                                }
+
                                 mMap.addCircle(circleOptions)
                             } else if(qual == 2) {
                                 var circleOptions = CircleOptions()
                                     .center(location)
                                     .radius(radius).fillColor(0xFF2DA52D.toInt()).clickable(true)
+                                if(nature.equals("PEOPLEPOWERED") == false){
+                                    circleOptions.strokeColor(Color.BLUE)
+                                }
                                 mMap.addCircle(circleOptions)
                             } else {
                                 var circleOptions = CircleOptions()
                                     .center(location)
                                     .radius(radius).fillColor(0xFF0E580E.toInt()).clickable(true)
+                                if(nature.equals("PEOPLEPOWERED") == false){
+                                    circleOptions.strokeColor(Color.BLUE)
+                                }
                                 mMap.addCircle(circleOptions)
                             }
 
