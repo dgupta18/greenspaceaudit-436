@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.google.android.gms.measurement.module.Analytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -45,9 +46,16 @@ class ProfileActivity : AppCompatActivity() {
         if (isAdmin) {
             Log.i("ADMIN: ", "setting view as profile admin")
             setContentView(R.layout.activity_profile_admin)
+            var analytics = findViewById<Button>(R.id.save_data)
+            analytics!!.setOnClickListener {
+                val intent = Intent(this, ChartActivity::class.java)
+                startActivity(intent)
+                overridePendingTransition(0, 0)
+            }
         } else {
             setContentView(R.layout.activity_profile)
         }
+
 
         val context = this
 

@@ -41,6 +41,9 @@ dependencies {
 
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.firebaseui:firebase-ui-storage:6.1.0'
+
+    //for the pie graph
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }
 
 repositories {
