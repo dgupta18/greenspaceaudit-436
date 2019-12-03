@@ -36,6 +36,20 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="22sp" />
 
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_gravity="bottom">
+            <ImageView
+                android:id="@+id/thumbnails"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="2dp"/>
+        </HorizontalScrollView>
+
         <!--    TODO: do we want to add a picture of the green space on maps here? if so, how do we do that? -->
 
         <LinearLayout
@@ -129,8 +143,8 @@
         android:layout_weight="1" />
 
     <layout.NavBar
-    android:layout_height="56dp"
-    android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_width="match_parent"
         />
 
 </LinearLayout>

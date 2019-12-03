@@ -45,8 +45,9 @@ class MainActivity : AppCompatActivity() {
         }
         loginBtn!!.setOnClickListener {
 //            val what = Intent(this@MainActivity,LoginActivity::class.java)
-            val what = Intent(this@MainActivity,CameraActivity::class.java)
+//            val what = Intent(this@MainActivity,CameraActivity::class.java)
 //            val what = Intent(this@MainActivity,Camera::class.java)
+            val what = Intent(this@MainActivity,DisplayGreenSpaceActivity::class.java)
 
             startActivity(what)
             overridePendingTransition(0, 0)

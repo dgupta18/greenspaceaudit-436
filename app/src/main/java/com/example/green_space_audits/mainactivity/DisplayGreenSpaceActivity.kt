@@ -6,13 +6,21 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import android.util.Log
+import android.widget.ImageView
 import kotlinx.android.synthetic.main.activity_displaygreenspace.*
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_displaygreenspace.linear_layout
 import kotlinx.android.synthetic.main.testingdisplay.*
 import com.google.firebase.storage.StorageReference
 import java.io.File
+import com.squareup.picasso.Picasso
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.firebase.storage.ListResult
+import com.google.android.gms.tasks.OnSuccessListener
+
+
 
 
 class DisplayGreenSpaceActivity : AppCompatActivity() {
@@ -24,8 +32,9 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
     private lateinit var hazardsTV: TextView
     private lateinit var gsDatabase: DatabaseReference
     private lateinit var greenspaceID: String
+    private lateinit var imageView: ImageView
 
-    private var mStorageRef: StorageReference? = null
+    private lateinit var mStorageRef: StorageReference
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +42,7 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
         setContentView(R.layout.activity_displaygreenspace)
 
         gsDatabase = FirebaseDatabase.getInstance().getReference("GreenSpaces")
-        mStorageRef = FirebaseStorage.getInstance().getReference()
+
 
         nameTV = findViewById<TextView>(R.id.nameView)
         acresTV = findViewById<TextView>(R.id.acresView)
@@ -42,14 +51,52 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
         quietTV = findViewById<TextView>(R.id.quietView)
         hazardsTV = findViewById<TextView>(R.id.hazardsView)
 
+        imageView = findViewById<ImageView>(R.id.thumbnails)
+
         val context = this
-        greenspaceID = intent.getStringExtra("gsID")
+//        greenspaceID = intent.getStringExtra("gsID")
+
+
 
         // this is for testing purposes
-//        greenspaceID = "-Luk55Tvcj5CjArCxliA"
+        greenspaceID = "-Luk55Tvcj5CjArCxliA"
 //        greenspaceID = "-Luxf6N0TQ4dDATfyYQY"
 
+        mStorageRef = FirebaseStorage.getInstance().getReference(greenspaceID)
+//        mStorageRef = FirebaseStorage.getInstance().getReference("images")
+
+
+        mStorageRef.listAll().addOnSuccessListener(OnSuccessListener<ListResult> { result ->
+            for (fileRef in result.items) {
+                fileRef.downloadUrl.addOnSuccessListener {
+                    Picasso.get().load(it).into(imageView)
+                }
+            }
+        }).addOnFailureListener(OnFailureListener {
+            // Handle any errors
+        })
+
+
+
+
+
+
+
+
+
+
+
         val commentsSet = mutableSetOf<String>()
+
+
+
+//        Glide.with(this /* context */)
+//            .load(storageReference)
+//            .into(imageView)
+//        Picasso.with(imageView.context).load(it).into(imageView)
+//
+//        Picasso.get().load(mStorageRef.listAll()).into(imageView)
+
 
         // use an addValueListener to get the current user's username
         gsDatabase.addValueEventListener(object : ValueEventListener {
@@ -120,6 +167,7 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
                         linear_layout.addView(commentTV)
                         // add pictures
 //                        picture_layout.addView()
+
 
                     }
                 }
