@@ -6,10 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
@@ -38,21 +35,20 @@ class ProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         mAuth = FirebaseAuth.getInstance()
-        mDatabase = FirebaseDatabase.getInstance()
-        mDatabaseReference = mDatabase!!.reference!!.child("Users")
-
         val id = mAuth!!.currentUser!!.uid
-
+        val isAdmin = mAuth!!.currentUser!!.displayName == "admin"
         pref = getSharedPreferences("adminKey",Context.MODE_PRIVATE)
-        val isAdmin: Boolean = pref.getString(id, "false").toBoolean()
-        Log.i("ADMIN: ", pref.all.toString())
+//        val isAdmin: Boolean = pref.getString(id, "false").toBoolean()
+//        Log.i("ADMIN: ", pref.all.toString())
         if (isAdmin) {
             Log.i("ADMIN: ", "setting view as profile admin")
             setContentView(R.layout.activity_profile_admin)
         } else {
             setContentView(R.layout.activity_profile)
         }
+
         val context = this
 
         nameHolder = findViewById<View>(R.id.profile_name) as TextView
@@ -62,6 +58,12 @@ class ProfileActivity : AppCompatActivity() {
             badgesHolder = findViewById(R.id.badges_container) as LinearLayout
         }
         favoritesHolder = findViewById(R.id.favorites_container) as LinearLayout
+
+        // get database info
+        mDatabase = FirebaseDatabase.getInstance()
+        mDatabaseReference = mDatabase!!.reference!!.child("Users")
+
+
 
         // Attach a listener to read the data
         mDatabaseReference.addValueEventListener(object : ValueEventListener {
@@ -187,6 +189,14 @@ class ProfileActivity : AppCompatActivity() {
                 println("The read failed: " + databaseError.code)
             }
         })
+    }
+
+    fun logOut(view: View) {
+        val editor: SharedPreferences.Editor = pref.edit()
+        editor.clear().commit()
+        val intent = Intent(this@ProfileActivity, MainActivity::class.java)
+        startActivity(intent)
+        overridePendingTransition(0, 0)
     }
 
 }
