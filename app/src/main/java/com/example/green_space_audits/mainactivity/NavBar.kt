@@ -15,14 +15,19 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import com.example.green_space_audits.mainactivity.*
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.FirebaseError
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.concurrent.schedule
+import kotlin.collections.HashMap
 
 
 class NavBar(context: Context, attrs: AttributeSet): LinearLayout(context, attrs) {
+
     init {
         inflate(context, R.layout.navbar, this)
 
@@ -44,18 +49,33 @@ class NavBar(context: Context, attrs: AttributeSet): LinearLayout(context, attrs
             myActivity.overridePendingTransition(0,0)
         }
         checkin.setOnClickListener {
+            // create map
+            var gss = getNearestGreenspaces()
 
-            val gss = getNearestGreenspaces()
-            if (gss == null) {
-                Toast.makeText(getContext(), "You're not currently near a green space!", Toast.LENGTH_LONG).show()
-            } else {
-                val intent = Intent(getContext(), PreCheckInActivity::class.java)
-                getContext().startActivity(intent)
-                val myActivity = getContext() as Activity
-                for ((k,v) in gss) {
-                    intent.putExtra(k, v)
+            Timer("getGSs", false).schedule( 1000L) {
+                Log.i("GS: ", "---GSS---" + gss.toString())
+                Log.i("GS: ", "in timer call")
+                if (gss.isEmpty()) {
+                    Toast.makeText(
+                        getContext(),
+                        "You're not currently near a green space!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    val intent = Intent(getContext(), PreCheckInActivity::class.java)
+                    intent.putExtra("gss", gss)
+
+                    getContext().startActivity(intent)
+                    val myActivity = getContext() as Activity
+//                    val names: ArrayList<String> = ArrayList()
+//                    for ((k, v) in gss) {
+//                        intent.putExtra(k, v)
+//                        names.add(k)
+//                    }
+//                    intent.putExtra("gsNames", names)
+//                    Log.i("INTENT: ", intent.extras!!.toString())
+                    myActivity.overridePendingTransition(0, 0)
                 }
-                myActivity.overridePendingTransition(0,0)
             }
         }
         profile.setOnClickListener {
@@ -66,23 +86,27 @@ class NavBar(context: Context, attrs: AttributeSet): LinearLayout(context, attrs
         }
     }
 
-    private fun getNearestGreenspaces(): MutableMap<String,String>? {
-        // create map
-        var gss: MutableMap<String,String> = mutableMapOf<String,String>()
+    private fun getNearestGreenspaces() : HashMap<String, String> {
+        var gss: HashMap<String, String> = HashMap()
 
         // look thru each greenspace for distance
-        var mDatabaseRef = FirebaseDatabase.getInstance().reference!!.child("Greenspaces")
+        var mDatabaseRef = FirebaseDatabase.getInstance().reference!!.child("GreenSpaces")
+
         mDatabaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val greenspaces = dataSnapshot.children
-                for (gs in greenspaces) {
-                    Log.i("GS: ", gs.key)
+                var greenspaces: HashMap<String,Any> = dataSnapshot.getValue() as HashMap<String,Any>
+
+                for ((id, gsRaw) in greenspaces) {
+                    Log.i("GS: ", id)
+                    Log.i("GS: ", gsRaw.toString())
+
+                    // cast
+                    val gs: HashMap<String,Any> = gsRaw as HashMap<String,Any>
 
                     // get greenspace info
-                    val id = gs.key
-                    val name = gs.getValue(GreenSpace::class.java)!!.gsName
-                    val gsx:Double = gs.getValue(GreenSpace::class.java)!!.gsLat.toDouble()
-                    val gsy:Double = gs.getValue(GreenSpace::class.java)!!.gsLong.toDouble()
+                    val name = gs["gsName"]!!.toString()
+                    val gsx:Double = gs["gsLat"] as Double
+                    val gsy:Double = gs["gsLong"] as Double
 
                     // get user location
                     val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
@@ -96,22 +120,30 @@ class NavBar(context: Context, attrs: AttributeSet): LinearLayout(context, attrs
                     }
                     val locationProvider = locationManager.getBestProvider(Criteria(), true)
                     val lastKnownLocation = locationManager.getLastKnownLocation(locationProvider)
-                    val curx: Double = lastKnownLocation.latitude
-                    val cury: Double = lastKnownLocation.longitude
+//                    val curx: Double = lastKnownLocation.latitude
+//                    val cury: Double = lastKnownLocation.longitude
+
+                    val curx = 38.9897
+                    val cury = -76.9378
 
                     // compare user loc to greenspace loc
                     var result: FloatArray = FloatArray(1)
                     Location.distanceBetween(curx, cury, gsx, gsy, result)
-                    if (result[0] < 16094.0 && id != null) {
+                    if (result[0] < 200000.0) {
                         gss[name] = id
                     }
                 }
+
             }
             override fun onCancelled(p0: DatabaseError) {
                 println("The read failed: " + p0.code)
             }
         })
-
         return gss
+    }
+
+    interface OnDataLoadedListener {
+        fun onFinishLoading(data: HashMap<String,String>)
+        fun onCancelled(firebaseError: FirebaseError)
     }
 }

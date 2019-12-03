@@ -2,7 +2,8 @@ package com.example.green_space_audits.mainactivity
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ScrollView
+import android.util.Log
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -10,8 +11,8 @@ import androidx.core.content.ContextCompat
 
 class PreCheckInActivity: AppCompatActivity() {
 
-    var greenspaces: MutableMap<String,String> = mutableMapOf()
-    private lateinit var matchesHolder: ScrollView
+    private lateinit var greenspaces: HashMap<String,String>
+    private lateinit var matchesHolder: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,12 +22,10 @@ class PreCheckInActivity: AppCompatActivity() {
 
         // save all extras into greenspaces map
         // name -> id
-        val bundle = intent.extras
-        if (bundle != null) {
-            for (key in bundle.keySet()) {
-                greenspaces[key] = bundle.get(key) as String
-            }
-        }
+        Log.i("PRECHECKIN: ", intent.extras.toString())
+        greenspaces = intent.getSerializableExtra("gss") as HashMap<String, String>
+
+        Log.i("PRECHECKIN: ", greenspaces.toString())
 
         // get matchesHolder
         matchesHolder = findViewById(R.id.matches_container)
@@ -36,7 +35,8 @@ class PreCheckInActivity: AppCompatActivity() {
         for ((name, id) in greenspaces) {
             val match = TextView(context)
             match.setTextColor(ContextCompat.getColor(context,R.color.colorPrimaryDark))
-            match.textSize = 20f
+            match.textSize = 24f
+            match.setPadding(0,30,0,30)
             match.text = name
             match.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
             match.setOnClickListener {

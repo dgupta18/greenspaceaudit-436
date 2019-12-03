@@ -9,22 +9,40 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingLeft="16dp"
-        android:paddingTop="64dp"
-        android:paddingRight="16dp">
+        android:layout_height="140dp"
+        android:layout_marginBottom="24dp"
+        android:background="#388E3C"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/nameView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center"
-            android:padding="30sp"
-            android:text="Check in to "
-            android:textColor="@color/colorPrimary"
-            android:textSize="36sp" />
+            android:text="Check in to Mckeldin Mall"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/typeView"-->
+        <!--            android:layout_width="match_parent"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:text="People-powered"-->
+        <!--            android:textAlignment="center"-->
+        <!--            android:textColor="#CCFFB5"-->
+        <!--            android:textSize="20sp" />-->
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
 
         <TextView
             android:id="@+id/quality"
@@ -88,8 +106,27 @@
             android:id="@+id/anonComment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Comment Anonymously"
+            android:text="Comment anonymously"
             android:textColor="@color/colorPrimaryDark" />
+
+        <CheckBox
+            android:id="@+id/favoriteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add this to favorites?"
+            android:textColor="@color/colorPrimaryDark" />
+        <ImageView
+            android:id="@+id/TreeImageView"
+            android:layout_width="match_parent"
+            android:layout_marginVertical="15dp"
+            android:layout_height="75dp"
+            android:contentDescription="Tree Image"
+            android:elevation="5dp"
+            android:fadingEdge="vertical"
+            android:fadingEdgeLength="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/cameraicon" />
 
         <Button
             android:id="@+id/finish"
@@ -108,5 +145,16 @@
 
     <layout.NavBar
         android:layout_width="match_parent"
-        android:layout_height="56dp" />
+        android:layout_height="56dp" >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+    </layout.NavBar>
 </LinearLayout>

@@ -35,11 +35,13 @@ class AddGreenSpaceActivity : AppCompatActivity() {
     private lateinit var usersDatabase: DatabaseReference
     private lateinit var username: String
     private lateinit var userComments: MutableMap<String, Comment>
+    private lateinit var userBadges: MutableList<String>
     private lateinit var locationManager: LocationManager
     private lateinit var locationProvider: String
-//    private lateinit var locationListener: LocationListener
     private var lat = 0.0
     private var long = 0.0
+    private var userPoints = 0
+    private var pointsEarned = 0
 
     private val quality: Quality
         get() {
@@ -132,10 +134,12 @@ class AddGreenSpaceActivity : AppCompatActivity() {
         long = lastknownLocation.longitude
 
 
-        // use an addValueListener to get the current user's username and comments
+        // use an addValueListener to get the current user's information
         usersDatabase.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 username = dataSnapshot.child(user).getValue<User>(User::class.java)!!.userName
+                userPoints = dataSnapshot.child(user).getValue<User>(User::class.java)!!.userPoints
+                userBadges = dataSnapshot.child(user).getValue<User>(User::class.java)!!.userBadges
                 if(dataSnapshot.child(user).child("uComments").value != null){
                     userComments = dataSnapshot.child(user).child("uComments").value as MutableMap<String, Comment>
                 } else {
@@ -157,6 +161,7 @@ class AddGreenSpaceActivity : AppCompatActivity() {
         val commentText = commentET.text.toString()
         val acresString = acresET.text.toString()
         var commentsList = mutableMapOf<String, Comment>()
+        var badgeEarned = false
 
         // check to see if a name has been provided
         if(!TextUtils.isEmpty(name)) {
@@ -168,6 +173,16 @@ class AddGreenSpaceActivity : AppCompatActivity() {
 
                 // check to see if the user left a comment
                 if(!TextUtils.isEmpty(commentText)){
+                    // give the user 5 points for commenting
+                    pointsEarned += 5
+
+                    // if this is the user's first time commenting, give them the comment badge
+                    if(!userBadges.contains(Badge.COMMENT.displayStr)){
+                        userBadges.add(Badge.COMMENT.displayStr)
+                        usersDatabase.child(user).child("userBadges").setValue(userBadges)
+                        badgeEarned = true
+                    }
+
                     // get a unique ID for the comment
                     val commentID = gsDatabase.push().key
 
@@ -189,7 +204,6 @@ class AddGreenSpaceActivity : AppCompatActivity() {
 
                 }
 
-                // TODO I don't know how likely it is that the location can't be found. Do we need to worry about this?
                 if(lat == 0.0 && long == 0.0){
                     Toast.makeText(this, "Unable to find location", Toast.LENGTH_LONG).show()
                 } else {
@@ -218,9 +232,28 @@ class AddGreenSpaceActivity : AppCompatActivity() {
                     // add the new green space to the database
                     gsDatabase.child(greenSpaceID!!).setValue(newGS)
 
-                    Toast.makeText(this, "Green space added", Toast.LENGTH_LONG).show()
+                    // give the user 10 points for checking in
+                    pointsEarned += 10
 
-                    // TODO: which activity do we want to launch?
+                    // update the user's points
+                    usersDatabase.child(user).child("userPoints").setValue(userPoints + pointsEarned)
+
+                    // if this is the user's first time adding a green space, give them the add badge
+                    if(!userBadges.contains(Badge.ADD.displayStr)){
+                        userBadges.add(Badge.ADD.displayStr)
+                        usersDatabase.child(user).child("userBadges").setValue(userBadges)
+                        badgeEarned = true
+                    }
+
+
+                    // display a toast telling the user the addition was successful and how many points they earned
+                    Toast.makeText(this, "Added! You earned ${pointsEarned} points!", Toast.LENGTH_LONG).show()
+
+                    // display a toast if the user earned a badge
+                    if(badgeEarned){
+                        Toast.makeText(this, "You earned a new badge!", Toast.LENGTH_LONG).show()
+                    }
+
                     val enter =
                         Intent(this@AddGreenSpaceActivity, DisplayGreenSpaceActivity::class.java)
                     enter.putExtra("gsID", greenSpaceID)

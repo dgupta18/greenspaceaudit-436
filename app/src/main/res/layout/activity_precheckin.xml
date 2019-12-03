@@ -30,7 +30,6 @@
 
 
     <ScrollView
-        android:id="@+id/matches_container"
         android:layout_width="match_parent"
         android:layout_marginHorizontal="16dp"
         android:layout_height="350dp"
@@ -39,7 +38,13 @@
         android:scrollbars="vertical"
         >
 
+        <LinearLayout
+            android:id="@+id/matches_container"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+        </LinearLayout>
 
     </ScrollView>
 
