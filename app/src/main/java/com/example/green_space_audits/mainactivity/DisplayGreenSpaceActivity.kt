@@ -8,6 +8,7 @@ import com.google.firebase.database.*
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_displaygreenspace.*
 import androidx.core.content.ContextCompat
+import com.google.firebase.storage.FirebaseStorage
 
 class DisplayGreenSpaceActivity : AppCompatActivity() {
     private lateinit var nameTV: TextView
@@ -36,11 +37,16 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
         val context = this
         greenspaceID = intent.getStringExtra("gsID")
 
+        // getting the firebase storeage
+
+
         // this is for testing purposes
 //        greenspaceID = "-Luk55Tvcj5CjArCxliA"
 //        greenspaceID = "-Luxf6N0TQ4dDATfyYQY"
 
         val commentsSet = mutableSetOf<String>()
+
+        val storageReference = FirebaseStorage.getInstance().reference.child(greenspaceID)
 
         // use an addValueListener to get the current user's username
         gsDatabase.addValueEventListener(object : ValueEventListener {
