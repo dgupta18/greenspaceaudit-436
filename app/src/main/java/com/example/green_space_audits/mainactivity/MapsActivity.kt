@@ -10,6 +10,7 @@ import android.location.Criteria
 import android.location.LocationManager
 import android.os.Bundle
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -185,14 +186,17 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 mMap.setOnInfoWindowClickListener {
                         marker ->
 
-                    val gsID = marker.getTag() as String
-                    val enter =
-                        Intent(this@MapsActivity, DisplayGreenSpaceActivity::class.java)
-                    enter.putExtra("gsID", gsID)
-                    startActivity(enter)
-                    overridePendingTransition(0, 0)
-                    true
-
+                    if(marker.getTag() == null){
+                        Toast.makeText(this, "Unable to display this greenspace", Toast.LENGTH_LONG).show()
+                    } else {
+                        val gsID = marker.getTag() as String
+                        val enter =
+                            Intent(this@MapsActivity, DisplayGreenSpaceActivity::class.java)
+                        enter.putExtra("gsID", gsID)
+                        startActivity(enter)
+                        overridePendingTransition(0, 0)
+                        true
+                    }
                 }
 
 //                val place = Places(name,locat,info)

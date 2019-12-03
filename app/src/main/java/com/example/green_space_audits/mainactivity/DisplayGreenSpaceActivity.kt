@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import android.util.Log
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_displaygreenspace.*
 import androidx.core.content.ContextCompat
 
@@ -40,69 +41,73 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
 //        greenspaceID = "-Luk55Tvcj5CjArCxliA"
 //        greenspaceID = "-Luxf6N0TQ4dDATfyYQY"
 
-        val commentsSet = mutableSetOf<String>()
+        if(greenspaceID == null){
+            Toast.makeText(this, "Unable to display this greenspace", Toast.LENGTH_LONG).show()
+        } else {
+            val commentsSet = mutableSetOf<String>()
 
-        // use an addValueListener to get the current user's username
-        gsDatabase.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                Log.i("DISPLAY: ", "id: " + greenspaceID)
-                Log.i("DISPLAY: ", "nameTv: " + nameTV.toString())
-                Log.i("DISPLAY: ", "child: " + dataSnapshot.child(greenspaceID).toString())
-                Log.i("DISPLAY: ", "getValue: " + dataSnapshot.child(greenspaceID).getValue(GreenSpace::class.java).toString())
-                Log.i("DISPLAY: ", "gsName: " + dataSnapshot.child(greenspaceID).getValue(GreenSpace::class.java)!!.gsName)
+            // use an addValueListener to get the current user's username
+            gsDatabase.addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    Log.i("DISPLAY: ", "id: " + greenspaceID)
+                    Log.i("DISPLAY: ", "nameTv: " + nameTV.toString())
+                    Log.i("DISPLAY: ", "child: " + dataSnapshot.child(greenspaceID).toString())
+                    Log.i("DISPLAY: ", "getValue: " + dataSnapshot.child(greenspaceID).getValue(GreenSpace::class.java).toString())
+                    Log.i("DISPLAY: ", "gsName: " + dataSnapshot.child(greenspaceID).getValue(GreenSpace::class.java)!!.gsName)
 
-                nameTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsName
-                acresTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsAcres.toString()
+                    nameTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsName
+                    acresTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsAcres.toString()
 
-                val qual = (dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsAvgQuality + 0.5).toInt()
-                if(qual == 1){
-                    qualityTV.text = "Low"
-                } else if(qual == 2) {
-                    qualityTV.text = "Medium"
-                } else {
-                    qualityTV.text = "High"
-                }
+                    val qual = (dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsAvgQuality + 0.5).toInt()
+                    if(qual == 1){
+                        qualityTV.text = "Low"
+                    } else if(qual == 2) {
+                        qualityTV.text = "Medium"
+                    } else {
+                        qualityTV.text = "High"
+                    }
 
-                typeTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsType.displayStr
+                    typeTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsType.displayStr
 
-                Log.i("QUIET: ", "" + dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsIsQuiet)
-                if(dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsIsQuiet) {
-                    quietTV.text = "Quiet"
-                } else {
-                    quietTV.text = "Noisy"
-                }
+                    Log.i("QUIET: ", "" + dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsIsQuiet)
+                    if(dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsIsQuiet) {
+                        quietTV.text = "Quiet"
+                    } else {
+                        quietTV.text = "Noisy"
+                    }
 
-                if(dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsIsNearHazards) {
-                    hazardsTV.text = "Near hazards"
-                } else {
-                    hazardsTV.text = "Not near hazards"
-                }
+                    if(dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsIsNearHazards) {
+                        hazardsTV.text = "Near hazards"
+                    } else {
+                        hazardsTV.text = "Not near hazards"
+                    }
 
-                for(entry in dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsComments){
-                    if(!commentsSet.contains(entry.key)) {
-                        commentsSet.add(entry.key)
-                        val commentTV = TextView(context)
-                        val authorTV = TextView(context)
-                        commentTV.textSize = 20f
-                        commentTV.text = entry.value.comment
-                        commentTV.setPadding(70, 0, 0, 40)
+                    for(entry in dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsComments){
+                        if(!commentsSet.contains(entry.key)) {
+                            commentsSet.add(entry.key)
+                            val commentTV = TextView(context)
+                            val authorTV = TextView(context)
+                            commentTV.textSize = 20f
+                            commentTV.text = entry.value.comment
+                            commentTV.setPadding(70, 0, 0, 40)
 
-                        authorTV.textSize = 20f
-                        authorTV.text = entry.value.authorDisplayName
-                        authorTV.setTypeface(authorTV.getTypeface(), Typeface.BOLD)
-                        authorTV.setPadding(70, 0, 0, 0)
-                        authorTV.setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
+                            authorTV.textSize = 20f
+                            authorTV.text = entry.value.authorDisplayName
+                            authorTV.setTypeface(authorTV.getTypeface(), Typeface.BOLD)
+                            authorTV.setPadding(70, 0, 0, 0)
+                            authorTV.setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
 
-                        // add TextView to LinearLayout
-                        linear_layout.addView(authorTV)
-                        linear_layout.addView(commentTV)
+                            // add TextView to LinearLayout
+                            linear_layout.addView(authorTV)
+                            linear_layout.addView(commentTV)
+                        }
                     }
                 }
-            }
-            // I'm not sure why this is necessary, but it was included in the Firebase lab
-            override fun onCancelled(databaseError: DatabaseError) {
-            }
-        })
+                // I'm not sure why this is necessary, but it was included in the Firebase lab
+                override fun onCancelled(databaseError: DatabaseError) {
+                }
+            })
+        }
 
     }
 
