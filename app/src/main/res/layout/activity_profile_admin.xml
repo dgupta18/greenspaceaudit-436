@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    >
+
+    <!-- name & email -->
+    <LinearLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:gravity="center"
+        android:background="#388E3C"
+        android:layout_marginBottom="24dp"
+        >
+
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/profile_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="#CCFFB5"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+
+    <!-- points -->
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:background="@drawable/points_button" >
+
+        <TextView
+            android:id="@+id/profile_points"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAlignment="center"
+            android:textColor="#388E3C"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/profile_points_str"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:text="points"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <!-- favorites -->
+    <TextView
+        android:id="@+id/favorites_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginHorizontal="24dp"
+        android:text="Favorites"
+        android:textColor="#388E3C"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="5dp" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:layout_marginHorizontal="24dp"
+        android:scrollbars="horizontal" >
+
+        <LinearLayout
+            android:id="@+id/favorites_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+        </LinearLayout>
+
+    </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/save_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginVertical="50dp"
+        android:layout_marginHorizontal="120dp"
+        android:background="@drawable/save_data_button"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="16sp"
+        android:typeface="normal"
+        android:text="ANALYTICS" />
+
+    <!-- correcting spacing -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <!-- navbar -->
+    <layout.NavBar
+        android:layout_height="56dp"
+        android:layout_width="match_parent"
+        />
+
+</LinearLayout>

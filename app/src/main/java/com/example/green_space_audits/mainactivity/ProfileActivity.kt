@@ -1,19 +1,17 @@
 package com.example.green_space_audits.mainactivity
 
+import android.content.Context
 import android.content.Intent
-import android.graphics.Color
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
-import android.view.Gravity
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginTop
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -21,13 +19,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.ValueEventListener
 
-
 class ProfileActivity : AppCompatActivity() {
 
     private lateinit var nameHolder: TextView
     private lateinit var emailHolder: TextView
     private lateinit var pointsHolder: TextView
-    private lateinit var badgesHolder: LinearLayout
+    private var badgesHolder: LinearLayout? = null
     private lateinit var favoritesHolder: LinearLayout
     private lateinit var mAuth: FirebaseAuth
     private lateinit var mDatabase: FirebaseDatabase
@@ -37,24 +34,34 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var points: String
     private lateinit var badges: MutableList<String>
     private lateinit var favorites: MutableMap<String,String>
+    private lateinit var pref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_profile)
-
-        val context = this
-
-        nameHolder = findViewById<View>(R.id.profile_name) as TextView
-        emailHolder = findViewById<View>(R.id.profile_email) as TextView
-        pointsHolder = findViewById<View>(R.id.profile_points) as TextView
-        badgesHolder = findViewById(R.id.badges_container) as LinearLayout
-        favoritesHolder = findViewById(R.id.favorites_container) as LinearLayout
-
         mAuth = FirebaseAuth.getInstance()
         mDatabase = FirebaseDatabase.getInstance()
         mDatabaseReference = mDatabase!!.reference!!.child("Users")
 
         val id = mAuth!!.currentUser!!.uid
+
+        pref = getSharedPreferences("adminKey",Context.MODE_PRIVATE)
+        val isAdmin: Boolean = pref.getString(id, "false").toBoolean()
+        Log.i("ADMIN: ", pref.all.toString())
+        if (isAdmin) {
+            Log.i("ADMIN: ", "setting view as profile admin")
+            setContentView(R.layout.activity_profile_admin)
+        } else {
+            setContentView(R.layout.activity_profile)
+        }
+        val context = this
+
+        nameHolder = findViewById<View>(R.id.profile_name) as TextView
+        emailHolder = findViewById<View>(R.id.profile_email) as TextView
+        pointsHolder = findViewById<View>(R.id.profile_points) as TextView
+        if (!isAdmin) {
+            badgesHolder = findViewById(R.id.badges_container) as LinearLayout
+        }
+        favoritesHolder = findViewById(R.id.favorites_container) as LinearLayout
 
         // Attach a listener to read the data
         mDatabaseReference.addValueEventListener(object : ValueEventListener {
@@ -74,55 +81,57 @@ class ProfileActivity : AppCompatActivity() {
                 emailHolder.text = email
                 pointsHolder.text = points
 
-                // add a badge for number of points earned, if applicable
-                if(currUser!!.userPoints > 50){
-                    val num = (currUser!!.userPoints / 50) * 50 // gets the highest multiple of 50 less than their current number of points
-                    badges.add("Earned ${num} points")
+                // BADGE STUFF ONLY IF NOT ADMIN
+                if (!isAdmin) {
+                    // add a badge for number of points earned, if applicable
+                    if(currUser!!.userPoints > 50){
+                        val num = (currUser!!.userPoints / 50) * 50 // gets the highest multiple of 50 less than their current number of points
+                        badges.add("Earned ${num} points")
+                    }
+
+                    Log.i("BADGES: ", badges.toString())
+                    if (badges.isEmpty() || badges.toString().equals("[]")) {
+                        val emptyBadges = TextView(context)
+                        emptyBadges.setTextColor(ContextCompat.getColor(context, R.color.colorGreyAccent))
+                        emptyBadges.text = "No badges yet!"
+                        emptyBadges.textSize = 24f
+                        emptyBadges.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
+                        badgesHolder!!.addView(emptyBadges)
+                    }
+                    for (entry in badges){
+
+                        val scale = context.resources.displayMetrics.density
+
+                        // create relative layout for new badge
+                        val newBadge = RelativeLayout(context)
+                        newBadge.layoutParams = RelativeLayout.LayoutParams((100 * scale + 0.5f).toInt(), (120 * scale + 0.5f).toInt())
+
+                        // add badge icon
+                        val icon = ImageView(context)
+                        icon.setImageResource(R.drawable.badge_icon)
+                        icon.id = R.id.img_id
+                        icon.layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,(80 * scale + 0.5f).toInt())
+                        newBadge.addView(icon)
+                        Log.i("ADDED ICON: ", icon.toString())
+
+                        // add title
+                        val title = TextView(context)
+                        title.text = entry
+                        title.textSize = 14f
+                        title.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
+                        title.setTextColor(ContextCompat.getColor(context, R.color.colorGreyAccent))
+                        val layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
+                        layoutParams.addRule(RelativeLayout.BELOW, icon.id)
+                        layoutParams.setMargins(0,(3 * scale + 0.5f).toInt(),0,0)
+                        title.layoutParams = layoutParams
+                        newBadge.addView(title)
+                        Log.i("ADDED TITLE: ", title.toString())
+
+                        // add new badge view into the linear layout
+                        badgesHolder!!.addView(newBadge)
+                        Log.i("ADDED BADGE: ", badgesHolder.toString())
+                    }
                 }
-
-                Log.i("BADGES: ", badges.toString())
-                if (badges.isEmpty() || badges.toString().equals("[]")) {
-                    val emptyBadges = TextView(context)
-                    emptyBadges.setTextColor(ContextCompat.getColor(context, R.color.colorGreyAccent))
-                    emptyBadges.text = "No badges yet!"
-                    emptyBadges.textSize = 24f
-                    emptyBadges.textAlignment = TextView.TEXT_ALIGNMENT_TEXT_START
-                    badgesHolder.addView(emptyBadges)
-                }
-                for (entry in badges){
-
-                    val scale = context.resources.displayMetrics.density
-
-                    // create relative layout for new badge
-                    val newBadge = RelativeLayout(context)
-                    newBadge.layoutParams = RelativeLayout.LayoutParams((100 * scale + 0.5f).toInt(), (120 * scale + 0.5f).toInt())
-
-                    // add badge icon
-                    val icon = ImageView(context)
-                    icon.setImageResource(R.drawable.badge_icon)
-                    icon.id = R.id.img_id
-                    icon.layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,(80 * scale + 0.5f).toInt())
-                    newBadge.addView(icon)
-                    Log.i("ADDED ICON: ", icon.toString())
-
-                    // add title
-                    val title = TextView(context)
-                    title.text = entry
-                    title.textSize = 14f
-                    title.textAlignment = TextView.TEXT_ALIGNMENT_CENTER
-                    title.setTextColor(ContextCompat.getColor(context, R.color.colorGreyAccent))
-                    val layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT)
-                    layoutParams.addRule(RelativeLayout.BELOW, icon.id)
-                    layoutParams.setMargins(0,(3 * scale + 0.5f).toInt(),0,0)
-                    title.layoutParams = layoutParams
-                    newBadge.addView(title)
-                    Log.i("ADDED TITLE: ", title.toString())
-
-                    // add new badge view into the linear layout
-                    badgesHolder.addView(newBadge)
-                    Log.i("ADDED BADGE: ", badgesHolder.toString())
-                }
-
 
                 Log.i("FAVORITES: ", favorites.toString())
                 if (favorites.isEmpty() || favorites.toString().equals("[]")) {

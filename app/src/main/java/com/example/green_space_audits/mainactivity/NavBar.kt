@@ -67,13 +67,6 @@ class NavBar(context: Context, attrs: AttributeSet): LinearLayout(context, attrs
 
                     getContext().startActivity(intent)
                     val myActivity = getContext() as Activity
-//                    val names: ArrayList<String> = ArrayList()
-//                    for ((k, v) in gss) {
-//                        intent.putExtra(k, v)
-//                        names.add(k)
-//                    }
-//                    intent.putExtra("gsNames", names)
-//                    Log.i("INTENT: ", intent.extras!!.toString())
                     myActivity.overridePendingTransition(0, 0)
                 }
             }
