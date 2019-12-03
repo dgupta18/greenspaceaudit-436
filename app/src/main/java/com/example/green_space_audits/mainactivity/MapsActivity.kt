@@ -23,7 +23,6 @@ import java.nio.charset.Charset
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
-    private lateinit var profileFragment: ProfileActivity
     private lateinit var locationManager: LocationManager
     private lateinit var locationProvider: String
     private lateinit var mMap: GoogleMap
@@ -161,7 +160,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1
+        const val LOCATION_PERMISSION_REQUEST_CODE = 1
         private const val DEFAULT_ZOOM_LEVEL = 12
 
     }

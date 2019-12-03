@@ -50,9 +50,9 @@ class CheckinActivity : AppCompatActivity() {
         anonButton = findViewById<CheckBox>(R.id.anonComment)
         finishButton = findViewById<Button>(R.id.finish)
 
-        //greenspaceID = intent.getStringExtra("gsID")
+        greenspaceID = intent.getStringExtra("gsID")
         // TODO this hardcoded ID is for testing only. use the intent to pass the ID ^
-        greenspaceID = "-Luk55Tvcj5CjArCxliA"
+//        greenspaceID = "-Luk55Tvcj5CjArCxliA"
 
         gsDatabase = FirebaseDatabase.getInstance().getReference("GreenSpaces")
         usersDatabase = FirebaseDatabase.getInstance().getReference("Users")
@@ -133,7 +133,7 @@ class CheckinActivity : AppCompatActivity() {
         // TODO: which activity do we want to launch?
         val enter = Intent(this@CheckinActivity, MapsActivity::class.java)
         startActivity(enter)
-
+        overridePendingTransition(0,0)
     }
 
 }
