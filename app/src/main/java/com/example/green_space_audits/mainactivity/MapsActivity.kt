@@ -73,7 +73,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(MarkerOptions().position(LatLng(x,y)).title("College park here").snippet(information).alpha(0.0f))
 
 
-//        centerMapToUser()
+        centerMapToUser()
         makeMarkers()
 
 
