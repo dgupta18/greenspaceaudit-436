@@ -1,0 +1,97 @@
+/* general */
+* {
+    font-family: "Open Sans";
+    font-weight: 480;
+    letter-spacing: .8px;
+}
+body {
+    background-color: rgb(3, 44, 3);
+}
+body i {
+    font-family:'FontAwesome'!important;
+}
+
+/* container to hold everything */
+#container {
+    margin: 0 auto;
+    width: 60%;
+}
+
+/* icon/title */
+.header {
+    width: 100%;
+    margin: 30px 0;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+#icon {
+    margin: auto 20px;
+    width: 70px;
+    height: auto;
+}
+#title {
+    color: #CCFFB5;
+    font-size: 44px;
+    font-weight: 400 !important;
+    padding-top: 10px;
+}
+
+/* line break */
+hr {
+    border-top: 1px solid #E8E8E8;
+}
+
+/* links */
+.links {
+    margin-top: 20px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+.links a {
+    margin: 15px;
+    text-decoration: none;
+    color: rgb(8, 48, 8);
+    font-size: 16px;
+    line-height: 50px;  /* must be same as .linkholder height */
+}
+.linkholder {
+    width: 50px;
+    height: 50px;
+    background-color: #CCFFB5;
+    border-radius: 50%;
+    text-align: center;
+}
+i {
+    margin: 10px 0px 0px 1px !important;
+    font-size: 30px !important;
+    /* vertical-align:middle !important; */
+}
+
+/* general */
+.section {
+    margin: 60px 20px;
+}
+.section-title {
+    color: #CCFFB5;
+    font-size: 24px;
+    font-weight: 550;
+    margin: 10px 0px;
+}
+
+/* description */
+#description {
+    color:  #E8E8E8;
+}
+
+/* screenshots */
+#screenshots {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-gap: 20px;
+}
+#screenshots > img {
+    max-width: 100%;
+    height: auto;
+}

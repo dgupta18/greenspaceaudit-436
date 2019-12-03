@@ -1,6 +1,8 @@
 package com.example.green_space_audits.mainactivity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
@@ -15,6 +17,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 class LoginActivity : AppCompatActivity() {
+    private lateinit var pref: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     private var mDatabaseReference: DatabaseReference? = null
     private var mDatabase: FirebaseDatabase? = null
@@ -29,6 +33,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        pref = getSharedPreferences("adminKey", Context.MODE_PRIVATE)
+
         userEmail = findViewById(R.id.email)
         userPassword = findViewById(R.id.password)
 
@@ -38,8 +44,6 @@ class LoginActivity : AppCompatActivity() {
         mDatabase = FirebaseDatabase.getInstance()
         mDatabaseReference = mDatabase!!.reference!!.child("Users")
         mAuth = FirebaseAuth.getInstance()
-
-
 
         loginBtn!!.setOnClickListener { loginUserAccount() }
 
@@ -67,8 +71,8 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(applicationContext, "Login successful!", Toast.LENGTH_LONG)
                         .show()
                     val uid = mAuth?.uid
+
                     Log.d("Test", "Test")
-//                    val enter = Intent(this@LoginActivity, MapsActivity::class.java)
                     val enter = Intent(this@LoginActivity, MapsActivity::class.java)
                     startActivity(enter)
                     overridePendingTransition(0, 0)
@@ -79,10 +83,7 @@ class LoginActivity : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
                 }
-
             }
-
-
 
     }
 
