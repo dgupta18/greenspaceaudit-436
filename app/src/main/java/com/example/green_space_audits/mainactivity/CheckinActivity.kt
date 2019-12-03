@@ -8,6 +8,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
 
 class CheckinActivity : AppCompatActivity() {
     private lateinit var nameTV: TextView
@@ -56,6 +57,7 @@ class CheckinActivity : AppCompatActivity() {
 
         gsDatabase = FirebaseDatabase.getInstance().getReference("GreenSpaces")
         usersDatabase = FirebaseDatabase.getInstance().getReference("Users")
+
 
         user = FirebaseAuth.getInstance().currentUser!!.uid
 

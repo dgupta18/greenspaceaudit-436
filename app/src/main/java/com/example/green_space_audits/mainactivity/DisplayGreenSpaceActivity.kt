@@ -8,8 +8,12 @@ import com.google.firebase.database.*
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_displaygreenspace.*
 import androidx.core.content.ContextCompat
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.activity_displaygreenspace.linear_layout
 import kotlinx.android.synthetic.main.testingdisplay.*
+import com.google.firebase.storage.StorageReference
+import java.io.File
+
 
 class DisplayGreenSpaceActivity : AppCompatActivity() {
     private lateinit var nameTV: TextView
@@ -21,12 +25,15 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
     private lateinit var gsDatabase: DatabaseReference
     private lateinit var greenspaceID: String
 
+    private var mStorageRef: StorageReference? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_displaygreenspace)
 
         gsDatabase = FirebaseDatabase.getInstance().getReference("GreenSpaces")
+        mStorageRef = FirebaseStorage.getInstance().getReference()
 
         nameTV = findViewById<TextView>(R.id.nameView)
         acresTV = findViewById<TextView>(R.id.acresView)
@@ -82,6 +89,19 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
 
                 for(entry in dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsComments){
                     if(!commentsSet.contains(entry.key)) {
+
+                        var localFile = File.createTempFile("images", "jpg")
+                        mStorageRef!!.getFile(localFile)
+
+
+
+
+
+
+
+
+
+
                         commentsSet.add(entry.key)
                         val commentTV = TextView(context)
                         val authorTV = TextView(context)
