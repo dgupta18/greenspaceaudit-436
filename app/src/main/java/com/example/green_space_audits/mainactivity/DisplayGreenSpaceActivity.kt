@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import android.util.Log
+import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_displaygreenspace.*
@@ -45,12 +46,11 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
         quietTV = findViewById<TextView>(R.id.quietView)
         hazardsTV = findViewById<TextView>(R.id.hazardsView)
 
-        imageView = findViewById<ImageView>(R.id.thumbnails)
+//        imageView = findViewById<ImageView>(R.id.thumbnails)
 
 
         val context = this
         greenspaceID = intent.getStringExtra("gsID")
-//        greenspaceID = "-Luk55Tvcj5CjArCxliA"
 
         // check to make sure the green space id from the intent is not null
         if(greenspaceID == null){
@@ -62,13 +62,20 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
             mStorageRef.listAll().addOnSuccessListener(OnSuccessListener<ListResult> { result ->
                 for (fileRef in result.items) {
                     fileRef.downloadUrl.addOnSuccessListener {
+
+
+                        var imageView = ImageView(applicationContext)
+
                         Picasso.get().load(it).into(imageView)
+
+                        thumbnails.addView(imageView)
+
+
                     }
                 }
             }).addOnFailureListener(OnFailureListener {
                 // Handle any errors
             })
-
 
 
 
