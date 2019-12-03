@@ -1,0 +1,72 @@
+/* general */
+* {
+    font-family: "Open Sans";
+    font-weight: 550;
+    letter-spacing: .8px;
+}
+body {
+    background-color: rgb(3, 44, 3);
+}
+body i {
+    font-family:'FontAwesome'!important;
+}
+
+/* container to hold everything */
+#container {
+    margin: 0 auto;
+    width: 60%;
+}
+
+/* icon/title */
+.header {
+    width: 100%;
+    margin: 30px 0;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+#icon {
+    margin: auto 20px;
+    width: 70px;
+    height: auto;
+}
+#title {
+    color: #CCFFB5;
+    font-size: 44px;
+    font-weight: 400 !important;
+    padding-top: 10px;
+}
+
+/* line break */
+hr {
+    border-top: 1px solid #E8E8E8;
+}
+
+/* links */
+.links {
+    margin-top: 20px;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+.links a {
+    margin: 15px;
+    text-decoration: none;
+    color: rgb(8, 48, 8);
+    font-size: 14px;
+    line-height: 55px;  /* must be same as .linkholder height */
+}
+.linkholder {
+    width: 55px;
+    height: 55px;
+    background-color: #CCFFB5;
+    border-radius: 50%;
+    text-align: center;
+}
+i {
+    width: 55px;
+    height: auto;
+    font-size: 30px !important;
+    vertical-align: middle !important;
+    margin-left: 1px;
+}
