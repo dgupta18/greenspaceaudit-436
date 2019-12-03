@@ -119,6 +119,7 @@ class AddGreenSpaceActivity : AppCompatActivity() {
         locationManager = this.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         locationProvider = locationManager.getBestProvider(Criteria(), true)
 
+        // make sure the app has permissions to access location data
         if (ActivityCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED) {
@@ -129,6 +130,8 @@ class AddGreenSpaceActivity : AppCompatActivity() {
             return
         }
 
+        // get the user's last known locaction
+        // NOTE: This will not work on the emulator
         val lastknownLocation = locationManager.getLastKnownLocation(locationProvider)
         lat = lastknownLocation.latitude
         long = lastknownLocation.longitude
@@ -169,6 +172,7 @@ class AddGreenSpaceActivity : AppCompatActivity() {
             // check to see if the acreage has been provided
             if(!TextUtils.isEmpty(acresString)) {
                 // convert the acres from a string to a float
+                // The value is guaranteed to be a float because the EditText requires a decimal input
                 val acres = acresString.toFloat()
 
                 // check to see if the user left a comment
@@ -202,12 +206,13 @@ class AddGreenSpaceActivity : AppCompatActivity() {
                     }
 
 
-                }
+                } // end of comment if statement
 
+                // check to make sure a latitutde and longitude were found
                 if(lat == 0.0 && long == 0.0){
                     Toast.makeText(this, "Unable to find location", Toast.LENGTH_LONG).show()
                 } else {
-                    // create a green space object
+                    // create a green space object with the data provided
                     val newGS = GreenSpace(
                         name,
                         user,
@@ -232,7 +237,7 @@ class AddGreenSpaceActivity : AppCompatActivity() {
                     // add the new green space to the database
                     gsDatabase.child(greenSpaceID!!).setValue(newGS)
 
-                    // give the user 10 points for checking in
+                    // give the user 10 points for adding a green space
                     pointsEarned += 10
 
                     // update the user's points
@@ -245,7 +250,6 @@ class AddGreenSpaceActivity : AppCompatActivity() {
                         badgeEarned = true
                     }
 
-
                     // display a toast telling the user the addition was successful and how many points they earned
                     Toast.makeText(this, "Added! You earned ${pointsEarned} points!", Toast.LENGTH_LONG).show()
 
@@ -254,6 +258,7 @@ class AddGreenSpaceActivity : AppCompatActivity() {
                         Toast.makeText(this, "You earned a new badge!", Toast.LENGTH_LONG).show()
                     }
 
+                    // start the activity to display the green space that was just added
                     val enter =
                         Intent(this@AddGreenSpaceActivity, DisplayGreenSpaceActivity::class.java)
                     enter.putExtra("gsID", greenSpaceID)

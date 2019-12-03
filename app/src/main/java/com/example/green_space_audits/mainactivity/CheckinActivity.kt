@@ -78,28 +78,29 @@ class CheckinActivity : AppCompatActivity() {
         mStorageRef = FirebaseStorage.getInstance().getReference()
 
         greenspaceID = intent.getStringExtra("gsID")
-        // TODO this hardcoded ID is for testing only. use the intent to pass the ID ^
-//        greenspaceID = "-Luk55Tvcj5CjArCxliA"
+
         gsDatabase = FirebaseDatabase.getInstance().getReference("GreenSpaces")
         usersDatabase = FirebaseDatabase.getInstance().getReference("Users")
 
         user = FirebaseAuth.getInstance().currentUser!!.uid
 
-        // use an addValueListener to get the green space's name and comments
+        // use an addValueListener to get the green space's information
         gsDatabase.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 gsName = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsName
-                nameTV.text = "Check in to:\n" + gsName
                 gsComments = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsComments
                 gsAvgQual = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsAvgQuality
                 gsNumRankings = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.numRankings
+
+                // set the name TextView's text based on the name of the green space
+                nameTV.text = "Check in to:\n" + gsName
             }
             // I'm not sure why this is necessary, but it was included in the Firebase lab
             override fun onCancelled(databaseError: DatabaseError) {
             }
         })
 
-        // use an addValueListener to get the current user's username and comments
+        // use an addValueListener to get the current user's information
         usersDatabase.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 username = dataSnapshot.child(user).getValue<User>(User::class.java)!!.userName
@@ -116,6 +117,7 @@ class CheckinActivity : AppCompatActivity() {
                     userFavorites = mutableMapOf<String, String>()
                 }
 
+                // check the favorites button if this green space is already in the user's favorites list
                 if(userFavorites.contains(greenspaceID)){
                     favoriteButton.setChecked(true)
                 } else {
@@ -127,6 +129,7 @@ class CheckinActivity : AppCompatActivity() {
             }
         })
 
+        // request permissions to take pictures if the camera icon is clicked
         mImageView!!.setOnClickListener{
 
             if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -146,8 +149,6 @@ class CheckinActivity : AppCompatActivity() {
             }
 
         }
-
-
 
         finishButton.setOnClickListener{
             finishCheckin()
@@ -196,13 +197,12 @@ class CheckinActivity : AppCompatActivity() {
 
         }
 
-        // update the average quality ranking for the greenspace
+        // update the average quality ranking and the number of rankings for the green space
         val newQuality = ((gsAvgQual * gsNumRankings) + quality.ordinal + 1) / (gsNumRankings + 1)
-
         gsDatabase.child(greenspaceID).child("gsAvgQuality").setValue(newQuality)
         gsDatabase.child(greenspaceID).child("numRankings").setValue(gsNumRankings + 1)
 
-        // if the favorite button is checked and the greenspace isn't already one of the users favorites,
+        // if the favorite button is checked and the green space isn't already one of the users favorites,
         // add it to their favorites list
         if(favoriteButton.isChecked && !userFavorites.contains(greenspaceID)){
             userFavorites[greenspaceID] = gsName
@@ -214,7 +214,7 @@ class CheckinActivity : AppCompatActivity() {
                 usersDatabase.child(user).child("userBadges").setValue(userBadges)
                 badgeEarned = true
             }
-        // otherwise, if the favorites button is unchecked and the green space is in the users favorites list, remove it
+        // otherwise, if the favorites button is unchecked but the green space is in the users favorites list, remove it
         } else if (!favoriteButton.isChecked && userFavorites.contains(greenspaceID)) {
             userFavorites.remove(greenspaceID)
             usersDatabase.child(user).child("userFavorites").setValue( userFavorites)
@@ -233,20 +233,24 @@ class CheckinActivity : AppCompatActivity() {
             badgeEarned = true
         }
 
-        // send the photo to firebase storage
-        val filename = UUID.randomUUID().toString()
+        // if a photo was uploaded, send it to firebase storage
+        if(submitBitmap != null) {
+            val filename = UUID.randomUUID().toString()
 
-        val myFireBaseRef = FirebaseStorage.getInstance().reference.child("/$greenspaceID/$filename")
+            val myFireBaseRef = FirebaseStorage.getInstance().reference.child("/$greenspaceID/$filename")
 
+            val baos = ByteArrayOutputStream()
+            submitBitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            var data = baos.toByteArray()
+            myFireBaseRef.putBytes(data)
 
-        val baos = ByteArrayOutputStream()
-        submitBitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        var  data = baos.toByteArray()
-
-        myFireBaseRef.putBytes(data)
-
-
-
+            // if this is the user's first time uploading a photo, give them the photo badge
+            if(!userBadges.contains(Badge.PHOTO.displayStr)){
+                userBadges.add(Badge.PHOTO.displayStr)
+                usersDatabase.child(user).child("userBadges").setValue(userBadges)
+                badgeEarned = true
+            }
+        }
 
         // display a toast telling the user how many points they earned
         Toast.makeText(this, "You earned ${pointsEarned} points!", Toast.LENGTH_LONG).show()
@@ -256,6 +260,7 @@ class CheckinActivity : AppCompatActivity() {
             Toast.makeText(this, "You earned a new badge!", Toast.LENGTH_LONG).show()
         }
 
+        // return the user to the maps activity
         val enter = Intent(this@CheckinActivity, MapsActivity::class.java)
         startActivity(enter)
 

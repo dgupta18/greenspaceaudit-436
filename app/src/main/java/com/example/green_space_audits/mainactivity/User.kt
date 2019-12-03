@@ -17,5 +17,6 @@ enum class Badge(val displayStr: String) {
     ADD("Added a new green space"),
     COMMENT("Added a comment"),
     CHECKIN("Checked in to a green space"),
-    FAVORITE("Favorited a green space")
+    FAVORITE("Favorited a green space"),
+    PHOTO("Uploaded a picture")
 }
