@@ -115,6 +115,17 @@
             android:layout_height="wrap_content"
             android:text="Add this to favorites?"
             android:textColor="@color/colorPrimaryDark" />
+        <ImageView
+            android:id="@+id/TreeImageView"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:contentDescription="Tree Image"
+            android:elevation="5dp"
+            android:fadingEdge="vertical"
+            android:fadingEdgeLength="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/cameraicon" />
 
         <Button
             android:id="@+id/finish"
@@ -133,5 +144,16 @@
 
     <layout.NavBar
         android:layout_width="match_parent"
-        android:layout_height="56dp" />
+        android:layout_height="56dp" >
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+        </ScrollView>
+    </layout.NavBar>
 </LinearLayout>

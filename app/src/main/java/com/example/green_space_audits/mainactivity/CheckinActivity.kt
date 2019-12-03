@@ -1,13 +1,24 @@
 package com.example.green_space_audits.mainactivity
 
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
+
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import android.Manifest
+import android.app.Activity
+import android.graphics.Bitmap
+import android.provider.MediaStore
+import java.io.ByteArrayOutputStream
+import java.util.*
+
 
 class CheckinActivity : AppCompatActivity() {
     private lateinit var nameTV: TextView
@@ -29,6 +40,14 @@ class CheckinActivity : AppCompatActivity() {
     private var gsAvgQual = 0.toFloat()
     private var gsNumRankings = 0
     private var userPoints = 0
+
+    private val REQUEST_IMAGE_CAPTURE = 1
+    private val REQUEST_PERMISSIONS = 4
+    private val PERMISSION_CODE = 1001
+
+    private var mImageView: ImageView? = null
+    private var mStorageRef: StorageReference? = null
+    private var submitBitmap: Bitmap? = null
 
     private val quality: Quality
         get() {
@@ -55,6 +74,8 @@ class CheckinActivity : AppCompatActivity() {
         anonButton = findViewById<CheckBox>(R.id.anonComment)
         finishButton = findViewById<Button>(R.id.finish)
         favoriteButton = findViewById<CheckBox>(R.id.favoriteButton)
+        mImageView = findViewById<ImageView>(R.id.TreeImageView)
+        mStorageRef = FirebaseStorage.getInstance().getReference()
 
         //greenspaceID = intent.getStringExtra("gsID")
         // TODO this hardcoded ID is for testing only. use the intent to pass the ID ^
@@ -105,6 +126,28 @@ class CheckinActivity : AppCompatActivity() {
             override fun onCancelled(databaseError: DatabaseError) {
             }
         })
+
+        mImageView!!.setOnClickListener{
+
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED || checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+
+                    val permission = arrayOf(
+                        Manifest.permission.CAMERA,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    )
+                    requestPermissions(permission, PERMISSION_CODE)
+
+                } else {
+                    //permission was already granted
+                    DispatchTakePictureIntent()
+                }
+
+            }
+
+        }
+
+
 
         finishButton.setOnClickListener{
             finishCheckin()
@@ -190,6 +233,21 @@ class CheckinActivity : AppCompatActivity() {
             badgeEarned = true
         }
 
+        // send the photo to firebase storage
+        val filename = UUID.randomUUID().toString()
+
+        val myFireBaseRef = FirebaseStorage.getInstance().reference.child("/$greenspaceID/$filename")
+
+
+        val baos = ByteArrayOutputStream()
+        submitBitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        var  data = baos.toByteArray()
+
+        myFireBaseRef.putBytes(data)
+
+
+
+
         // display a toast telling the user how many points they earned
         Toast.makeText(this, "You earned ${pointsEarned} points!", Toast.LENGTH_LONG).show()
 
@@ -201,6 +259,32 @@ class CheckinActivity : AppCompatActivity() {
         val enter = Intent(this@CheckinActivity, MapsActivity::class.java)
         startActivity(enter)
 
+    }
+
+    private fun DispatchTakePictureIntent() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        if (takePictureIntent.resolveActivity(packageManager) != null) {
+
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,true)
+            startActivityForResult(takePictureIntent,1)
+
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                val extras = data.extras
+                val imageBitmap = extras!!.get("data") as Bitmap?
+
+                submitBitmap = imageBitmap!!.copy(imageBitmap.config, imageBitmap.isMutable)
+
+                mImageView!!.setImageBitmap(imageBitmap)
+            }
+
+
+        }
     }
 
 }
