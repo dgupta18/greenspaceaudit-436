@@ -1,7 +1,7 @@
 /* general */
 * {
     font-family: "Open Sans";
-    font-weight: 550;
+    font-weight: 480;
     letter-spacing: .8px;
 }
 body {
@@ -53,20 +53,33 @@ hr {
     margin: 15px;
     text-decoration: none;
     color: rgb(8, 48, 8);
-    font-size: 14px;
-    line-height: 55px;  /* must be same as .linkholder height */
+    font-size: 16px;
+    line-height: 50px;  /* must be same as .linkholder height */
 }
 .linkholder {
-    width: 55px;
-    height: 55px;
+    width: 50px;
+    height: 50px;
     background-color: #CCFFB5;
     border-radius: 50%;
     text-align: center;
 }
 i {
-    width: 55px;
-    height: auto;
+    margin: 10px 0px 0px 1px !important;
     font-size: 30px !important;
-    vertical-align: middle !important;
-    margin-left: 1px;
+    /* vertical-align:middle !important; */
 }
+
+/* description */
+.description {
+    margin: 50px 20px;
+}
+#d-title {
+    color: #CCFFB5;
+    font-size: 24px;
+    margin: 10px 0px;
+}
+#d-text {
+    color:  #E8E8E8;
+}
+
+/*  */
