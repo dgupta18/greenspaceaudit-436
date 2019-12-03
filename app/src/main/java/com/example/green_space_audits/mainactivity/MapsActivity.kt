@@ -56,22 +56,22 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
 
-        var x = 38.9897
-        var y = -76.9378
-        var circleOptions = CircleOptions()
-            .center(LatLng(x, y))
-            .radius(400.toDouble()).fillColor(Color.GREEN).clickable(true)
-        mMap.addCircle(circleOptions)
+//        var x = 38.9897
+//        var y = -76.9378
+//        var circleOptions = CircleOptions()
+//            .center(LatLng(x, y))
+//            .radius(400.toDouble()).fillColor(Color.GREEN).clickable(true)
+//        mMap.addCircle(circleOptions)
         mMap.uiSettings.isZoomControlsEnabled = true
         mMap.uiSettings.isMyLocationButtonEnabled = true
 
 
 
 
-        var information = "Population: 4,137,400 " +
-                "green: yes " +
-                "man made "
-        mMap.addMarker(MarkerOptions().position(LatLng(x,y)).title("College park here").snippet(information).alpha(0.0f))
+//        var information = "Population: 4,137,400 " +
+//                "green: yes " +
+//                "man made "
+//        mMap.addMarker(MarkerOptions().position(LatLng(x,y)).title("College park here").snippet(information).alpha(0.0f))
 
 
         centerMapToUser()
@@ -99,7 +99,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         // The actual one. Never delete this one
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(curx, cury), DEFAULT_ZOOM_LEVEL.toFloat()))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(curx, cury), (DEFAULT_ZOOM_LEVEL*1.3).toFloat()))
 
 
 
@@ -145,10 +145,26 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                             // and addCircle takes in a radius in meters
                             val radius = Math.sqrt((acres * 4046.86) / Math.PI)
 
-                            var circleOptions = CircleOptions()
-                                .center(location)
-                                .radius(radius).fillColor(Color.GREEN).clickable(true)
-                            mMap.addCircle(circleOptions)
+                            // color circle based on quality
+                            val qual = (dataSnapshot.child(gsID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsAvgQuality + 0.5).toInt()
+                            if(qual == 1){
+                                var circleOptions = CircleOptions()
+                                    .center(location)
+                                    .radius(radius).fillColor(0xFFCCFFB5.toInt()).clickable(true)
+                                mMap.addCircle(circleOptions)
+                            } else if(qual == 2) {
+                                var circleOptions = CircleOptions()
+                                    .center(location)
+                                    .radius(radius).fillColor(0xFF2DA52D.toInt()).clickable(true)
+                                mMap.addCircle(circleOptions)
+                            } else {
+                                var circleOptions = CircleOptions()
+                                    .center(location)
+                                    .radius(radius).fillColor(0xFF0E580E.toInt()).clickable(true)
+                                mMap.addCircle(circleOptions)
+                            }
+
+
 
                             val marker = mMap.addMarker(MarkerOptions().position(location).title(name).snippet(info).alpha(0.0f))
                             marker.setTag(gsID)
