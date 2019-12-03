@@ -103,11 +103,11 @@ class CameraActivity : AppCompatActivity() {
         submitButton!!.setOnClickListener{
 
 //            gsDatabase = FirebaseDatabase.getInstance().getReference("GreenSpaces")
-//            greenspaceID = intent.getStringExtra("gsID")
+            greenspaceID = "-Luk55Tvcj5CjArCxliA"
 
-            val filename = "1"
+            val filename =  UUID.randomUUID().toString()
 
-            val myFireBaseRef = FirebaseStorage.getInstance().reference.child("/images/$filename")
+            val myFireBaseRef = FirebaseStorage.getInstance().reference.child("/$greenspaceID/$filename")
 
 
             val baos = ByteArrayOutputStream()
