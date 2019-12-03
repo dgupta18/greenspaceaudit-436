@@ -234,15 +234,22 @@ class CheckinActivity : AppCompatActivity() {
         }
 
         // send the photo to firebase storage
-        val filename = UUID.randomUUID().toString()
-
-        val myFireBaseRef = FirebaseStorage.getInstance().reference.child("/$greenspaceID/$filename")
-
         if(submitBitmap != null) {
+            val filename = UUID.randomUUID().toString()
+
+            val myFireBaseRef = FirebaseStorage.getInstance().reference.child("/$greenspaceID/$filename")
+
             val baos = ByteArrayOutputStream()
             submitBitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
             var data = baos.toByteArray()
             myFireBaseRef.putBytes(data)
+
+            // if this is the user's first time uploading a photo, give them the photo badge
+            if(!userBadges.contains(Badge.PHOTO.displayStr)){
+                userBadges.add(Badge.PHOTO.displayStr)
+                usersDatabase.child(user).child("userBadges").setValue(userBadges)
+                badgeEarned = true
+            }
         }
 
 
