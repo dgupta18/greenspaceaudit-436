@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
+import com.google.firebase.auth.UserProfileChangeRequest
 
 
 class RegistrationActivity : AppCompatActivity() {
@@ -105,10 +106,23 @@ class RegistrationActivity : AppCompatActivity() {
                         .child(mAuth!!.currentUser!!.uid)
                         .setValue(user)
 
+                    // add email and password to sharedprefs
                     editor = pref.edit()
-                    editor.putString(mAuth!!.currentUser!!.uid, isAdmin.toString())
-                    Log.i("ADMIN: ", "changed editor")
+                    editor.putString(email, password)
                     editor.commit()
+
+                    // if the user is an admin, update displayname and sharedprefs
+                    if (isAdmin) {
+                        // if admin, set name to admin
+                        val currUser = FirebaseAuth.getInstance().currentUser
+                        val profileUpdates = UserProfileChangeRequest.Builder()
+                            .setDisplayName("admin").build()
+                        currUser!!.updateProfile(profileUpdates)
+
+                         editor.putString(mAuth!!.currentUser!!.uid, isAdmin.toString())
+                         Log.i("ADMIN: ", "changed editor")
+                         editor.commit()
+                    }
 
                     val intent = Intent(this@RegistrationActivity, LoginActivity::class.java)
                     startActivity(intent)

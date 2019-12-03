@@ -129,8 +129,23 @@
     <!-- correcting spacing -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/log_out"
+        android:layout_width="match_parent"
+        android:layout_height="18dp"
+        android:layout_marginHorizontal="150dp"
+        android:layout_marginVertical="10dp"
+        android:background="@null"
+        android:gravity="center"
+        android:onClick="logOut"
+        android:text="LOG OUT"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="16sp"
+        android:typeface="normal"
+        style="?android:attr/borderlessButtonStyle" />
 
     <!-- navbar -->
     <layout.NavBar
