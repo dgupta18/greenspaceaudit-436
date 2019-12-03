@@ -238,12 +238,13 @@ class CheckinActivity : AppCompatActivity() {
 
         val myFireBaseRef = FirebaseStorage.getInstance().reference.child("/$greenspaceID/$filename")
 
+        if(submitBitmap != null) {
+            val baos = ByteArrayOutputStream()
+            submitBitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            var data = baos.toByteArray()
+            myFireBaseRef.putBytes(data)
+        }
 
-        val baos = ByteArrayOutputStream()
-        submitBitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        var  data = baos.toByteArray()
-
-        myFireBaseRef.putBytes(data)
 
 
 
