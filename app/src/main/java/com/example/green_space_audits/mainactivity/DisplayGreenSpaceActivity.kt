@@ -8,6 +8,8 @@ import com.google.firebase.database.*
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_displaygreenspace.*
 import androidx.core.content.ContextCompat
+import kotlinx.android.synthetic.main.activity_displaygreenspace.linear_layout
+import kotlinx.android.synthetic.main.testingdisplay.*
 
 class DisplayGreenSpaceActivity : AppCompatActivity() {
     private lateinit var nameTV: TextView
@@ -96,6 +98,9 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
                         // add TextView to LinearLayout
                         linear_layout.addView(authorTV)
                         linear_layout.addView(commentTV)
+                        // add pictures
+//                        picture_layout.addView()
+
                     }
                 }
             }

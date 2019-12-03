@@ -17,14 +17,17 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.log
 
 
 class CameraActivity : AppCompatActivity() {
@@ -99,17 +102,19 @@ class CameraActivity : AppCompatActivity() {
 
         submitButton!!.setOnClickListener{
 
-            gsDatabase = FirebaseDatabase.getInstance().getReference("GreenSpaces")
-            greenspaceID = intent.getStringExtra("gsID")
-            val filename = greenspaceID
+//            gsDatabase = FirebaseDatabase.getInstance().getReference("GreenSpaces")
+//            greenspaceID = intent.getStringExtra("gsID")
 
-            val myFireBaseRef = FirebaseStorage.getInstance().reference.child("/$filename")
+            val filename = "1"
 
-            Log.i("i I am ","where")
-
-            val x = myFireBaseRef.putFile(photoURI!!)
+            val myFireBaseRef = FirebaseStorage.getInstance().reference.child("/images/$filename")
 
 
+            val baos = ByteArrayOutputStream()
+            submitBitmap!!.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            var  data = baos.toByteArray()
+
+            myFireBaseRef.putBytes(data)
 
 
         }
@@ -120,24 +125,14 @@ class CameraActivity : AppCompatActivity() {
 
 
 
-    private fun DispatchTakePictureIntent() { //Straight from android dev guide
+    private fun DispatchTakePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
-            // Create the File where the photo should go
-            var photoFile: File? = null
-            try {
-                photoFile = CreateImageFile()
-            } catch (ex: IOException) {
-                // Error occurred while creating the File
-                Log.d("greenSpace", "Error creating image file!")
-            }
 
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,true)
+            startActivityForResult(takePictureIntent,1)
 
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,true)
-                startActivityForResult(takePictureIntent,1)
-            }
+
         }
 
 
@@ -151,79 +146,14 @@ class CameraActivity : AppCompatActivity() {
             if (data != null) {
                 val extras = data.extras
                 val imageBitmap = extras!!.get("data") as Bitmap?
+
+                submitBitmap = imageBitmap!!.copy(imageBitmap.config, imageBitmap.isMutable)
+
                 mImageView!!.setImageBitmap(imageBitmap)
             }
-
-            var bitmap: Bitmap? = null
-            val file = File(mCurrentPhotoPath)
-            try {
-                photoURI = data!!.data
-                bitmap = MediaStore.Images.Media.getBitmap(
-                    applicationContext.contentResolver,
-                    Uri.fromFile(file)
-                )
-            } catch (e: IOException) {
-                Log.d("LeafSpace", "Photo wasn't found!")
-            }
-
-            if (bitmap != null) {
-                mImageView!!.setImageBitmap(bitmap)
-
-
-                val aspectRatio = bitmap.width / bitmap.height.toFloat()
-                val width = 480
-                val height = Math.round(width / aspectRatio)
-
-                submitBitmap = Bitmap.createScaledBitmap(
-                    bitmap, width, height, false
-                )
-
-
-            }
-
 
 
         }
     }
-
-
-
-    private fun CreateImageFile() : File {
-        // Create an image file name
-        var timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        var imageFileName = "LeafSpace_" + timeStamp + "_";
-        var storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        var image = File.createTempFile(
-            imageFileName,  /* prefix */
-            ".jpg",         /* suffix */
-            storageDir      /* directory */
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath()
-        return image
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
