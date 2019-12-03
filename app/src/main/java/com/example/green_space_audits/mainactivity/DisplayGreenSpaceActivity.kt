@@ -37,16 +37,13 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
         val context = this
         greenspaceID = intent.getStringExtra("gsID")
 
-        // this is for testing purposes
-//        greenspaceID = "-Luk55Tvcj5CjArCxliA"
-//        greenspaceID = "-Luxf6N0TQ4dDATfyYQY"
-
+        // check to make sure the green space id from the intent is not null
         if(greenspaceID == null){
             Toast.makeText(this, "Unable to display this greenspace", Toast.LENGTH_LONG).show()
         } else {
             val commentsSet = mutableSetOf<String>()
 
-            // use an addValueListener to get the current user's username
+            // use an addValueListener to get the green space's information
             gsDatabase.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     Log.i("DISPLAY: ", "id: " + greenspaceID)
@@ -55,9 +52,12 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
                     Log.i("DISPLAY: ", "getValue: " + dataSnapshot.child(greenspaceID).getValue(GreenSpace::class.java).toString())
                     Log.i("DISPLAY: ", "gsName: " + dataSnapshot.child(greenspaceID).getValue(GreenSpace::class.java)!!.gsName)
 
+                    // set the text value for the name, acres, and type text views
                     nameTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsName
                     acresTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsAcres.toString()
+                    typeTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsType.displayStr
 
+                    // determine which quality level to display based on the avereage quality ranking of the green space
                     val qual = (dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsAvgQuality + 0.5).toInt()
                     if(qual == 1){
                         qualityTV.text = "Low"
@@ -67,8 +67,7 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
                         qualityTV.text = "High"
                     }
 
-                    typeTV.text = dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsType.displayStr
-
+                    // set the quiet TextView text based on the value of gsIsQuiet
                     Log.i("QUIET: ", "" + dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsIsQuiet)
                     if(dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsIsQuiet) {
                         quietTV.text = "Quiet"
@@ -76,15 +75,23 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
                         quietTV.text = "Noisy"
                     }
 
+                    // set the hazards TextView text based on the value of gsIsNearHazards
                     if(dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsIsNearHazards) {
                         hazardsTV.text = "Near hazards"
                     } else {
                         hazardsTV.text = "Not near hazards"
                     }
 
+                    // loop through the green space's comments, create a TextView for each comment author and comment text,
+                    // and add them to the comments linear layout
                     for(entry in dataSnapshot.child(greenspaceID).getValue<GreenSpace>(GreenSpace::class.java)!!.gsComments){
+                        // check to make sure this comment isn't already being displayed
+                        // this is necessary because this will be called everytime the database is updated and
+                        // we don't want duplicate comments
                         if(!commentsSet.contains(entry.key)) {
+                            // add the comment id to commentsSet so it won't be displayed again
                             commentsSet.add(entry.key)
+
                             val commentTV = TextView(context)
                             val authorTV = TextView(context)
                             commentTV.textSize = 20f
@@ -97,9 +104,9 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
                             authorTV.setPadding(70, 0, 0, 0)
                             authorTV.setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
 
-                            // add TextView to LinearLayout
-                            linear_layout.addView(authorTV)
-                            linear_layout.addView(commentTV)
+                            // add TextViews to LinearLayout
+                            comments_linear_layout.addView(authorTV)
+                            comments_linear_layout.addView(commentTV)
                         }
                     }
                 }
