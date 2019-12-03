@@ -6,10 +6,16 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_displaygreenspace.*
 import androidx.core.content.ContextCompat
+import com.google.android.gms.tasks.OnFailureListener
+import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ListResult
+import com.google.firebase.storage.StorageReference
+import com.squareup.picasso.Picasso
 
 class DisplayGreenSpaceActivity : AppCompatActivity() {
     private lateinit var nameTV: TextView
@@ -20,6 +26,10 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
     private lateinit var hazardsTV: TextView
     private lateinit var gsDatabase: DatabaseReference
     private lateinit var greenspaceID: String
+
+    private lateinit var imageView: ImageView
+
+    private lateinit var mStorageRef: StorageReference
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,13 +45,35 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
         quietTV = findViewById<TextView>(R.id.quietView)
         hazardsTV = findViewById<TextView>(R.id.hazardsView)
 
+        imageView = findViewById<ImageView>(R.id.thumbnails)
+
+
         val context = this
         greenspaceID = intent.getStringExtra("gsID")
+//        greenspaceID = "-Luk55Tvcj5CjArCxliA"
 
         // check to make sure the green space id from the intent is not null
         if(greenspaceID == null){
             Toast.makeText(this, "Unable to display this greenspace", Toast.LENGTH_LONG).show()
         } else {
+
+            // fetching the images from firebase Storage and displaying
+            mStorageRef = FirebaseStorage.getInstance().getReference(greenspaceID)
+            mStorageRef.listAll().addOnSuccessListener(OnSuccessListener<ListResult> { result ->
+                for (fileRef in result.items) {
+                    fileRef.downloadUrl.addOnSuccessListener {
+                        Picasso.get().load(it).into(imageView)
+                    }
+                }
+            }).addOnFailureListener(OnFailureListener {
+                // Handle any errors
+            })
+
+
+
+
+
+
             val commentsSet = mutableSetOf<String>()
 
             // use an addValueListener to get the green space's information
