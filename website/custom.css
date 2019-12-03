@@ -69,17 +69,29 @@ i {
     /* vertical-align:middle !important; */
 }
 
-/* description */
-.description {
-    margin: 50px 20px;
+/* general */
+.section {
+    margin: 60px 20px;
 }
-#d-title {
+.section-title {
     color: #CCFFB5;
     font-size: 24px;
+    font-weight: 550;
     margin: 10px 0px;
 }
-#d-text {
+
+/* description */
+#description {
     color:  #E8E8E8;
 }
 
-/*  */
+/* screenshots */
+#screenshots {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-gap: 20px;
+}
+#screenshots > img {
+    max-width: 100%;
+    height: auto;
+}
