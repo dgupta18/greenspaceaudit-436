@@ -2,11 +2,10 @@ package com.example.green_space_audits.mainactivity
 
 import android.graphics.Typeface
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import android.util.Log
-import android.widget.ImageView
+import android.widget.*
 import kotlinx.android.synthetic.main.activity_displaygreenspace.*
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -32,7 +31,7 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
     private lateinit var hazardsTV: TextView
     private lateinit var gsDatabase: DatabaseReference
     private lateinit var greenspaceID: String
-    private lateinit var imageView: ImageView
+    private lateinit var imageView: HorizontalScrollView
 
     private lateinit var mStorageRef: StorageReference
 
@@ -51,11 +50,10 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
         quietTV = findViewById<TextView>(R.id.quietView)
         hazardsTV = findViewById<TextView>(R.id.hazardsView)
 
-        imageView = findViewById<ImageView>(R.id.thumbnails)
+        imageView = findViewById(R.id.scroll)
 
         val context = this
 //        greenspaceID = intent.getStringExtra("gsID")
-
 
 
         // this is for testing purposes
@@ -66,18 +64,30 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
 //        mStorageRef = FirebaseStorage.getInstance().getReference("images")
 
 
+        // fetching the images from firebase Storage and displaying
+        mStorageRef = FirebaseStorage.getInstance().getReference(greenspaceID)
         mStorageRef.listAll().addOnSuccessListener(OnSuccessListener<ListResult> { result ->
             for (fileRef in result.items) {
                 fileRef.downloadUrl.addOnSuccessListener {
+
+
+                    var imageView = ImageView(applicationContext)
+
                     Picasso.get().load(it).into(imageView)
+
+                    thumbnails.addView(imageView)
+
+
                 }
             }
         }).addOnFailureListener(OnFailureListener {
             // Handle any errors
         })
 
+        imageView.setOnClickListener {
+            Toast.makeText(applicationContext, "Login successful!", Toast.LENGTH_LONG)
 
-
+        }
 
 
 

@@ -37,16 +37,19 @@
             android:textSize="22sp" />
 
         <HorizontalScrollView
+            android:id="@+id/scroll"
             android:layout_width="match_parent"
             android:layout_height="72dp"
+            android:clickable="true"
             android:layout_gravity="bottom">
-            <ImageView
+            <LinearLayout
                 android:id="@+id/thumbnails"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:clickable="true"
                 android:paddingTop="2dp"/>
         </HorizontalScrollView>
 
