@@ -8,6 +8,7 @@ import com.google.firebase.database.*
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_displaygreenspace.*
 import androidx.core.content.ContextCompat
@@ -28,7 +29,7 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
     private lateinit var gsDatabase: DatabaseReference
     private lateinit var greenspaceID: String
 
-    private lateinit var imageView: ImageView
+    private lateinit var imageView: LinearLayout
 
     private lateinit var mStorageRef: StorageReference
 
@@ -46,7 +47,7 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
         quietTV = findViewById<TextView>(R.id.quietView)
         hazardsTV = findViewById<TextView>(R.id.hazardsView)
 
-//        imageView = findViewById<ImageView>(R.id.thumbnails)
+//        imageView = findViewById(R.id.thumbnails)
 
 
         val context = this
@@ -76,6 +77,7 @@ class DisplayGreenSpaceActivity : AppCompatActivity() {
             }).addOnFailureListener(OnFailureListener {
                 // Handle any errors
             })
+
 
 
 
