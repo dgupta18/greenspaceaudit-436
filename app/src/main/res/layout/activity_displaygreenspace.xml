@@ -60,9 +60,6 @@
                 android:paddingTop="2dp"/>
         </HorizontalScrollView>
 
-
-        <!--    TODO: do we want to add a picture of the green space on maps here? if so, how do we do that? -->
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
