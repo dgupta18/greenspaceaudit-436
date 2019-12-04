@@ -1,14 +1,17 @@
 package com.example.green_space_audits.mainactivity
 
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import com.google.firebase.database.*
-import android.util.Log
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 class ChartActivity : AppCompatActivity() {
 
@@ -23,9 +26,9 @@ class ChartActivity : AppCompatActivity() {
         chart.description.text = ""
         chart.description.textSize = 32F
         chart.setBackgroundColor(Color.WHITE)
-        chart.centerText = "Check-ins"
-        chart.setCenterTextSize(20f)
-        chart.setCenterTextColor(Color.BLACK)
+//        chart.centerText = "Check-ins"
+//        chart.setCenterTextSize(20f)
+//        chart.setCenterTextColor(Color.BLACK)
         chart.setHoleColor(Color.WHITE)
         var gss: HashMap<String, String> = HashMap()
 
