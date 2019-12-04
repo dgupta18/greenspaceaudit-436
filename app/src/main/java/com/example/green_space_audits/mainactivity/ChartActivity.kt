@@ -22,17 +22,13 @@ class ChartActivity : AppCompatActivity() {
         var chart = findViewById<PieChart>(R.id.pieChart)
         chart.setEntryLabelTextSize(12f)
         chart.setEntryLabelColor(Color.BLACK)
-        chart.legend.textSize = 8f
+        chart.legend.textSize = 12f
+        chart.legend.isWordWrapEnabled = true
         chart.description.text = ""
         chart.description.textSize = 32F
         chart.setBackgroundColor(Color.WHITE)
-//        chart.centerText = "Check-ins"
-//        chart.setCenterTextSize(20f)
-//        chart.setCenterTextColor(Color.BLACK)
         chart.setHoleColor(Color.WHITE)
-        var gss: HashMap<String, String> = HashMap()
 
-        // look thru each greenspace for distance
         var mDatabaseRef = FirebaseDatabase.getInstance().reference!!.child("GreenSpaces")
         var entries: ArrayList<PieEntry> = ArrayList()
 
@@ -54,11 +50,28 @@ class ChartActivity : AppCompatActivity() {
                     entries.add(PieEntry(checkIns.toFloat(), name))
                 }
                 var set = PieDataSet(entries, "")
-                set.valueTextSize = 20f
+                set.valueTextSize = 16f
                 set.valueTextColor = Color.BLACK
                 set.setColors(
-                    Color.GREEN, Color.MAGENTA, Color.YELLOW, Color.RED, Color.BLUE
-                )
+                    Color.parseColor("#FFF6C4"),
+                    Color.parseColor("#EB6F45"),
+                    Color.parseColor("#D3E397"),
+                    Color.parseColor("#8DCDC1"),
+                    Color.parseColor("#FFCC33"),
+                    Color.parseColor("#92CBFF"),
+                    Color.parseColor("#FAA195"),
+                    Color.parseColor("#028C79"),
+                    Color.parseColor("#DBA797"),
+                    Color.parseColor("#5A753F"),
+                    Color.parseColor("#EB9844"),
+                    Color.parseColor("#549D9E"),
+                    Color.parseColor("#429783"),
+                    Color.parseColor("#908F95"),
+                    Color.parseColor("#C9CEA9"),
+                    Color.parseColor("#429783"),
+                    Color.parseColor("#CDBBAD"),
+                    Color.parseColor("#796091")
+                    )
                 var data = PieData(set)
                 chart.data = data
                 chart.invalidate()
