@@ -21,13 +21,16 @@ class ChartActivity : AppCompatActivity() {
         chart.setEntryLabelColor(Color.BLACK)
         chart.legend.textSize = 8f
         chart.description.text = ""
+        chart.setUsePercentValues(true)
         chart.description.textSize = 32F
         chart.setBackgroundColor(Color.WHITE)
         chart.centerText = "Check-ins"
         chart.setCenterTextSize(20f)
         chart.setCenterTextColor(Color.BLACK)
         chart.setHoleColor(Color.WHITE)
+        chart.holeRadius = 25f
         var gss: HashMap<String, String> = HashMap()
+        chart.setUsePercentValues(true)
 
         // look thru each greenspace for distance
         var mDatabaseRef = FirebaseDatabase.getInstance().reference!!.child("GreenSpaces")
